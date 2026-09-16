@@ -35,6 +35,38 @@ PAGES = [
 SERIES = {"A": ("오용 위협보고서", "misuse/compare.html", "sa"),
           "B": ("RSP Risk Report", "risk/compare.html", "sb")}
 
+# Keep source links beside every edition so claims can be checked in context.
+SOURCES = {
+    "misuse-2025-03": [
+        ("공식 게시글", "https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025"),
+        ("사례 PDF", "https://cdn.sanity.io/files/4zrzovbb/website/45bc6adf039848841ed9e47051fb1209d6bb2b26.pdf"),
+    ],
+    "misuse-2025-08": [
+        ("공식 게시글", "https://www.anthropic.com/news/detecting-countering-misuse-aug-2025"),
+        ("원문 PDF", "https://www-cdn.anthropic.com/b2a76c6f6992465c09a6f2fce282f6c0cea8c200.pdf"),
+    ],
+    "misuse-2025-11": [
+        ("공식 게시글", "https://www.anthropic.com/news/disrupting-AI-espionage"),
+        ("개정 PDF", "https://assets.anthropic.com/m/ec212e6566a0d47/original/Disrupting-the-first-reported-AI-orchestrated-cyber-espionage-campaign.pdf"),
+    ],
+    "misuse-2026-02": [
+        ("공식 게시글", "https://www.anthropic.com/news/detecting-and-preventing-distillation-attacks"),
+    ],
+    "misuse-2026-09": [
+        ("공식 게시글", "https://www.anthropic.com/threat-intelligence-report-september-2026"),
+        ("원문 PDF", "https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf"),
+    ],
+    "risk-2026-02": [
+        ("원문 PDF（7월 8일 개정）", "https://www.anthropic.com/feb-2026-risk-report"),
+        ("RSP v3.0", "https://www.anthropic.com/responsible-scaling-policy/rsp-v3-0"),
+    ],
+    "risk-2026-08": [
+        ("원문 PDF", "https://www.anthropic.com/aug-2026-risk-report"),
+        ("RSP v3.4", "https://cdn.sanity.io/files/4zrzovbb/website/0bacdc8440ea96e62a8766d99ebe1d4eea6d5f3a.pdf"),
+        ("공개·개정 이력", "https://www.anthropic.com/responsible-scaling-policy"),
+    ],
+}
+
 CSS = (ROOT / "style.css").read_text(encoding="utf-8") + (ROOT / "style2.css").read_text(encoding="utf-8")
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -82,12 +114,17 @@ def prevnext(p):
     mid = f'<a href="{rel(here, cmp_["path"])}"><span class="lab">시리즈</span>누적 비교로 이동</a>'
     return f'<nav class="pn wrap" aria-label="판본 이동">{left}{mid}{right}</nav>'
 
-FOOT = ('<footer class="wrap"><p>국문 요약 · 최종 갱신 {u}. 표의 수치와 사실관계는 각 보고서 원문(PDF 또는 공식 게시 페이지)에서 확인했고, '
-        '괄호 안 <span class="pg">p.</span> 표기는 원문 쪽수다. "요약자 주석"으로 표시한 부분은 Anthropic의 서술이 아니라 요약자의 검토 의견이다.</p></footer>')
+FOOT = ('<footer class="wrap"><p>국문 요약 · 원문 대조 {u}. 수치·귀속·위험 평가는 Anthropic의 공개 보고에 근거하며, '
+        '사건의 실재나 비공개 증거를 독립적으로 검증했다는 뜻은 아니다. <span class="pg">p.</span>는 연결된 PDF의 쪽수다. '
+        '"요약자 주석"과 "변화 해설"은 요약자의 해석이다. '
+        '<a href="https://github.com/byoungpil-kim/anthropic-safety-archive/blob/main/VERIFICATION.md">검증·수정 기록</a></p></footer>')
 
 def page_body(p):
     body = (FRAG / f'{p["id"]}.html').read_text(encoding="utf-8")
     body = body.replace("{{ROOT}}", rel(p["path"], ""))
+    if p["id"] in SOURCES:
+        links = " · ".join(f'<a href="{url}">{label}</a>' for label, url in SOURCES[p["id"]])
+        body = body.replace('<nav class="toc"', f'<p class="meta">공식 출처: {links}</p>\n<nav class="toc"', 1)
     return "\n".join([topbar(p), '<main class="wrap">', body, '</main>', prevnext(p), FOOT.format(u=UPDATED)])
 
 def full_doc(p):

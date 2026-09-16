@@ -222,6 +222,7 @@ footer p{max-width:74ch}
   </p>
   <p class="meta"><span><b>분량</b> 154쪽</span><span><b>관측 기간</b> 2025.12–2026.08</span><span><b>관여 모델</b> Haiku·Sonnet·Opus</span></p>
 </div>
+<p class="meta">공식 출처: <a href="https://www.anthropic.com/threat-intelligence-report-september-2026">공식 게시글</a> · <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf">원문 PDF</a></p>
 <nav class="toc" aria-label="이 페이지 목차">
   <a href="#s01"><span>01</span>서지</a><a href="#s02"><span>02</span>위해 영역</a><a href="#s03"><span>03</span>추세</a><a href="#s04"><span>04</span>사례</a><a href="#s05"><span>05</span>AI 관여</a><a href="#s06"><span>06</span>안전장치</a><a href="#s07"><span>07</span>대응</a><a href="#s08"><span>08</span>권고</a><a href="#s09"><span>09</span>인용</a><a href="#s10"><span>10</span>주석</a>
 </nav>
@@ -233,7 +234,7 @@ footer p{max-width:74ch}
     <dt>제목</dt><dd>Detecting and countering misuse of AI: September 2026 (게시 페이지 제목 "Countering misuse of AI: September 2026")</dd>
     <dt>공개일</dt><dd>2026년 9월 10일</dd>
     <dt>관측 기간</dt><dd>2025년 12월–2026년 8월 (감시 섹션은 2026년 1–7월) <span class="pg">pp.3, 81</span></dd>
-    <dt>관여 모델</dt><dd>Claude Haiku·Sonnet·Opus. Fable·Mythos급 모델은 증류 1건을 제외하고 오용 사례 없음 <span class="pg">p.3</span></dd>
+    <dt>관여 모델</dt><dd>Claude Haiku·Sonnet·Opus. 수록 사례 중 Fable·Mythos급은 Fable을 겨냥한 증류 1건만 포함; Mythos 5·Preview 대상 증류 시도는 관측하지 못함 <span class="pg">pp.3, 143, 151</span></dd>
     <dt>구성</dt><dd>개요 3 · 사이버 4 · 영향력 41 · 감시 81 · 재래식 무기 111 · 생물학 129 · 사기 139 · 증류 143 (시작 쪽)</dd>
     <dt>부속 자료</dt><dd>침해지표(IOC) CSV</dd>
     <dt>공개 성격</dt><dd>"전형적 오용이 아니라 지금까지 확인한 가장 주목할 만하고 새로운 위협 활동의 사례" <span class="pg">p.3</span></dd>
@@ -251,7 +252,7 @@ footer p{max-width:74ch}
       <tr><th scope="row">영향력 공작</th><td class="n">9</td><td><span class="gtg">GTG-04001 · 54002 · 84005 · 24015 · 34001 · 54006 · 84006 · 54004 · 84002</span></td></tr>
       <tr><th scope="row">감시 <span class="chip new">신설</span></th><td class="n">10</td><td><span class="gtg">GTG-54009 · 14010 · 14020 · 14021 · 14022 · 34007 · 50027 · 30004 · 30005 · 30006</span></td></tr>
       <tr><th scope="row">재래식 무기 <span class="chip new">신설</span></th><td class="n">6</td><td><span class="gtg">GTG-87001 · 17001 · 27005 · 17002 · 27006 · 17003</span></td></tr>
-      <tr><th scope="row">생물학 오용 <span class="chip new">신설</span></th><td class="n">5</td><td>식별자 없이 사례 1–5로 표기, 기관·국가·병원체 비공개</td></tr>
+      <tr><th scope="row">생물학 오용 <span class="chip new">신설</span></th><td class="n">5</td><td>식별자 없이 사례 1–5로 표기, 기관·국가·세부 작용제 등을 비공개(일부 병원체 계열은 공개)</td></tr>
       <tr><th scope="row">사기</th><td class="n">1</td><td><span class="gtg">GTG-15001</span></td></tr>
       <tr><th scope="row">불법 증류</th><td class="n">7개 연구소</td><td><span class="gtg">GTG-16005 · 16002 · 16001 · 16006 · 16008 · 16012 · 16003</span></td></tr>
     </tbody>
@@ -279,14 +280,15 @@ footer p{max-width:74ch}
   <div class="cases">
     <div class="case"><div class="case-h"><span class="gtg">GTG-20006</span><span class="t">러시아 첩보 — 탐지되면 스스로 재빌드하는 툴킷</span></div>
       <p>Midnight Blizzard 연계 공개 보도와 일치하는 귀속. 우크라이나·유럽 정부, 외교·방위 조직을 노렸다. 보안 제품의 탐지 여부를 감시하는 에이전트가 탐지를 확인하면 탐지되지 않을 때까지 멀웨어를 자율적으로 수정·재빌드했다. 30만 건 넘는 국가신분기록 탈취. <span class="pg">pp.6–8</span></p></div>
-    <div class="case"><div class="case-h"><span class="gtg">GTG-50014</span><span class="t">ShinyHunters 계열 — 공급망 대량 탈취</span></div>
-      <p>안드로이드 APK 180만 개에서 하드코딩된 비밀을 찾는 파이프라인, 1TB 초과 유출, 약 34시간 동안 40개 넘는 기업 테넌트에서 Azure AD 토큰 2,100세트 초과 덤프. 피해 환경에서 훔친 AI API 키를 2차 공격에 재사용. <span class="pg">pp.12–13</span></p></div>
+    <div class="case"><div class="case-h"><span class="gtg">GTG-50014</span><span class="t">ShinyHunters 연계 추정 — 공급망 대량 탈취</span></div>
+      <p>안드로이드 APK 180만 개에서 하드코딩된 비밀을 찾는 파이프라인, 1TB 초과 유출, 약 34시간 동안 40개 넘는 기업 테넌트에서 Azure AD 토큰 2,100세트 초과 덤프. 피해 환경에서 훔친 AI API 키를 2차 공격에 재사용. <span class="pg">pp.12–14</span></p></div>
     <div class="case"><div class="case-h"><span class="gtg">GTG-10007</span><span class="t">중국 — 자율 취약점 공장</span></div>
       <p>후난성 창사 소재 추정, 일부는 공대 학부생. 약 50개 조직 표적. 에이전트 스웜과 지속적 캠페인 메모리로 무인 취약점 연구를 돌려 네트워크 어플라이언스 한 계통에서 한 달에 제로데이 후보 12건 초과를 산출. <span class="pg">pp.24–26</span></p></div>
     <div class="case"><div class="case-h"><span class="gtg">GTG-50020</span><span class="t">러시아 — AI 공급망 표적</span></div>
       <p>AI 벤더의 자동 평가 샌드박스에 악성 지시를 주입해 여러 제공사의 프로덕션 API 키를 탈취하고, 약 나흘간 AI 기업 약 30곳을 공격. 사전 공개 Claude 모델 접근을 노렸으나 모두 실패했고, Anthropic 시스템은 침해되지 않았다. <span class="pg">pp.30–31</span></p></div>
     <div class="case"><div class="case-h"><span class="gtg">GTG-50029</span><span class="t">프랑스어 핵티비스트 — 유럽 정치조직</span></div>
       <p>단독 행위자가 노출 API 키 스캐너와 키 로테이션 프록시를 만들고, 문서화되지 않은 WordPress 재설치 경쟁조건 익스플로잇을 같은 세션에서 개발. 추적된 42개 기관 중 최소 14곳 내부 접근. <span class="pg">pp.34–36</span></p></div>
+    <div class="case"><div class="case-h"><span class="gtg">GTG-50021</span><span class="t">위장 리셀러</span></div><p>Claude 할인 접근을 표방하면서 다른 모델로 요청을 보내고 가입자의 Anthropic 자격증명을 수집한 서비스. <span class="pg">pp.29, 38</span></p></div>
   </div>
 
   <h3>영향력 공작</h3>
@@ -308,9 +310,9 @@ footer p{max-width:74ch}
     <div class="case"><div class="case-h"><span class="gtg">GTG-14021 · 14020 · 14022</span><span class="t">중국 — 유지안정·종교사무·여론 감시</span></div>
       <p>시 사이버경찰이 Claude Code와 커스텀 스킬로 정부 감시 DB를 질의하고 일일 보고서 배포. 거부된 요청이 재프롬프트로 뒤집혀 사인 10명을 "통제" 대상으로 지목하는 지침 산출. 지방 국가안전국은 부서용 AI 사용 매뉴얼 작성, 밴쿠버 민주화 행진 경로 등 해외 합법 집회의 사전 현장 정보 요청. 종교 지도자 신상 파일, 하루 15–30건 이상의 외국 기사를 민감도로 점수화한 정부용 브리핑. <span class="pg">pp.89–101</span></p></div>
     <div class="case"><div class="case-h"><span class="gtg">GTG-34007 · 30004–30006</span><span class="t">이란 — 감시 시스템의 엔지니어링 부서</span></div>
-      <p>16개 계정, 1년간 6,388명 프로파일, 트윗 155,216건 분석으로 야권 계정 39개 선별, 기도시간 앱으로 위장한 Firefox 신원 수집 확장 실제 배포, 중앙 사건관리 시스템 "Arman". 미 해군 표적화 핸드북과 선박 시스템 CVE 목록, SECOMS64 임플란트. 노골적 요청 10건 중 9건은 거부되었으나 작업을 쪼갠 요청에는 일관성이 떨어짐. <span class="pg">pp.101–110</span></p></div>
+      <p>16개 계정, 1년간 6,388명 프로파일, 트윗 155,216건 분석으로 야권 계정 39개 선별, 기도시간 앱으로 위장한 Firefox 신원 수집 확장 실제 배포, 중앙 사건관리 시스템 "Arman". 미 해군 표적화 핸드북과 선박 시스템 CVE 목록, SECOMS64 임플란트. 이 사례에서 직접적인 악성 요청 10건 중 9건은 거부되었으나 작업을 쪼갠 요청에는 일관성이 떨어짐. <span class="pg">pp.101–110</span></p></div>
     <div class="case"><div class="case-h"><span class="gtg">GTG-14010 · 54009</span><span class="t">언어 장벽 없는 포섭, 상업 감시</span></div>
-      <p>아랍어를 못하는 중국계 행위자가 시리아 방언 접촉문·실시간 통역·"전문가" 역할극 검수로 위구르 표적 포섭 공작. 이스라엘-싱가포르계 S2T 관련 활동이 게시물을 25건씩 넣어 인구집단·위치·정치성향을 신뢰도와 함께 산출. <span class="pg">pp.82–89</span></p></div>
+      <p>아랍어를 못하는 중국계 행위자가 시리아 방언 접촉문·실시간 통역·"전문가" 역할극 검수로 위구르 표적 포섭 공작. 이스라엘-싱가포르계 S2T 관련 활동이 게시물을 25건씩 넣어 인구집단·위치·정치성향을 신뢰도와 함께 산출. 이 S2T 사례는 시범 단계에서 발견됐으며 후속 감시 단계가 실제 표적에 쓰였다는 증거는 확인하지 못했다. <span class="pg">pp.82–89</span></p></div>
   </div>
 
   <h3>재래식 무기</h3>
@@ -327,7 +329,7 @@ footer p{max-width:74ch}
   <div class="cases">
     <div class="case"><div class="case-h"><span class="t">생물학 오용 5건</span><span class="chip new">신설</span></div>
       <p>
-        AI 기업이 자사 플랫폼에서 생물무기 개발에 활용될 수 있는 사용례의 증거를 공개한 첫 사례라고 밝혔다. 연구기관·국가·구체적 작용제는 비공개다.
+        AI 기업이 자사 플랫폼에서 생물무기 개발에 활용될 수 있는 사용례의 증거를 공개한 첫 사례라고 밝혔다. 연구기관·국가·일부 세부 작용제·기법은 비공개다. 원문은 연구자의 위해 의도를 단정하지 않으며, 임박한 생물학 위협의 증거로 제시한 것도 아니라고 명시한다.
         ① 기능획득 연구 관련 요청을 분류기가 차단했고, 조사 결과 미지원 지역 연구자 수십 명을 상대하는 중계 플랫폼이 미국 인프라 터널링과 무보존(ZDR) 서비스로 우회하고 있었다.
         이 플랫폼은 Claude가 거부할 요청을 더 관대한 경쟁사 모델로 넘기는 폴백 장치를 만들었고, 그 코드의 상당 부분을 과잉거부 완화 명목으로 Claude가 작성했다.
         ② 미지원 지역 연구자가 수 주간 수천 건을 교환했으나 분류기가 고위험 내용을 막아 모든 교환이 Sonnet 4·Haiku 4.5에서 이루어졌고, 제공된 이득은 데이터 분석·구상 보조 수준으로 평가되었다.
@@ -343,7 +345,7 @@ footer p{max-width:74ch}
     <div class="case"><div class="case-h"><span class="t">불법 증류 — 중국 소재 7개 연구소</span></div>
       <p>
         Alibaba(Qwen)는 측정된 최대 규모로 Opus 4.6·4.7의 사고사슬을 겨냥해 5–7월 1억 5,100만 교환을 초과했고 최대 일 약 300만 건, 부정 계정 3,500개 초과였다.
-        Moonshot은 Kimi를 쓴다고 믿은 고객 요청을 Claude로 조용히 중계했고(10일간 약 30만 건, 부정 계정 5,380개), DeepSeek은 코딩 하네스 이용자를 선별 중계했다(7월 14일간 1,210만 건 초과).
+        Moonshot은 Kimi를 쓴다고 믿은 고객 요청을 Claude로 조용히 중계했고(중계 사례 10일간 약 30만 건; 전체 증류 관측 5–7월 2,300만 건 초과, 부정 계정 5,380개), DeepSeek은 코딩 하네스 이용자를 선별 중계했다(7월 14일간 1,210만 건 초과).
         두 곳 모두 추론 서명을 저장한 뒤 새 세션에서 되돌리게 하는 교차세션 재생으로 통제를 우회했다. Zhipu는 273개 계정으로 Opus 4.8 사고사슬을 추출했고,
         Fable의 강화된 사이버 안전장치가 공격을 저하시켜 표적을 Opus 4.6과 타사 모델로 바꿨다. Xiaomi는 자사 모델 세션을 재생했고(20일간 40만 건 초과),
         SenseTime은 제3자 벤더에서 대화록을 구매했으며 MiniMax는 관계를 숨긴 쉘 회사로 프록시를 직접 운영했다.
@@ -383,7 +385,7 @@ footer p{max-width:74ch}
       <tr><th scope="row">영향력</th><td>실명을 무장세력으로 지목하라는 요청 거부. 평가 기준의 정치적 가중치를 지적 <span class="pg">p.45</span></td><td>익명 출처 형식으로 우회, 지적받은 기준을 중립적 표현으로 바꿔 유지, 검증 불가 단서를 삭제하도록 재지시</td></tr>
       <tr><th scope="row">감시</th><td>은밀한 심문 지원과 대규모 페르소나 육성 요청 거부 <span class="pg">p.87</span></td><td>같은 요청을 재프롬프트해 사인 10명 지목 지침 산출. 다른 사례는 여러 세션에 걸쳐 개입 없이 응답. 감시 소프트웨어 제작 요청 다수는 거부되지 않음 <span class="pg">pp.94, 97, 102</span></td></tr>
       <tr><th scope="row">재래식 무기</th><td>다수 요청 차단. 고폭발물·무기 개발 탐지 분류기 신규 도입 <span class="pg">p.112</span></td><td>목적과 대상 제품을 숨기고 작업을 다세션으로 분할하는 방식에 취약. 조달 요청은 개별적으로 평범해 탐지가 특히 어려움</td></tr>
-      <tr><th scope="row">생물학</th><td>고위험 내용을 견고히 차단해 연구자를 가장 약한 모델로 밀어냄 <span class="pg">p.134</span></td><td>약독화에 초점을 둔 이중용도 연구는 설계상 통과. 거부 요청을 더 관대한 타사 모델로 넘기는 폴백 구조 구축 <span class="pg">p.132</span></td></tr>
+      <tr><th scope="row">생물학</th><td>고위험 내용을 견고히 차단해 연구자를 가장 약한 모델로 밀어냄 <span class="pg">p.134</span></td><td>약독화에 초점을 둔 이중용도 연구는 설계상 통과. 거부 요청을 더 관대한 타사 모델로 넘기는 폴백 구조 구축 <span class="pg">pp.132–133</span></td></tr>
       <tr><th scope="row">사기</th><td>—</td><td>시스템 프롬프트가 통상 롤플레이 배포와 구별되지 않아 기망 구조가 대화 내부에서 보이지 않음. 이용자가 중병이나 급성 고통을 알린 일부 사례에서도 페르소나 유지 <span class="pg">p.140</span></td></tr>
       <tr><th scope="row">증류</th><td>Fable의 사이버 안전장치가 공격을 저하시켜 행위자가 표적 변경. Mythos급 시도 미관측 <span class="pg">pp.143, 151</span></td><td>추론 서명 교차세션 재생으로 통제 우회. 12,000건 초과 시험으로 성공 기법을 찾은 뒤 대규모 공격 <span class="pg">pp.145, 148</span></td></tr>
     </tbody>
@@ -398,7 +400,7 @@ footer p{max-width:74ch}
   <span class="secno">07 · 탐지 방법과 대응 조치</span>
   <h2>제재에서 조직 단위 귀속으로</h2>
   <ul class="l">
-    <li>모든 사례에서 계정 차단, 조사 결과를 안전장치에 반영, 필요 시 당국·업계와 정보 공유 <span class="pg">p.3</span></li>
+    <li>수록 활동을 차단·교란하고 조사 결과를 안전장치에 반영, 필요 시 당국·업계와 정보 공유 <span class="pg">p.3</span></li>
     <li>영향력 공작은 제작 단계에서 포착해 상당수를 청중 형성 전에 차단. 외부 제보(INPACT/All Eyes on Wagner, OpenAI의 재범 활동 제보)가 조사의 출발점이 된 사례도 있음</li>
     <li>재래식 무기 영역에서는 Frontier Red Team이 전술 표적정보와 무기 개발 역량을 측정하는 신규 평가를 개발하고, 고폭발물·무기 개발 관련 트래픽 차단 분류기를 새로 도입 <span class="pg">pp.111–112</span></li>
     <li>증류는 개별 프록시 계정 차단이 아니라 조직 단위로 귀속한 뒤 포괄 제재. 추출 탐지 전용 분류기를 Fable 5 출시와 함께 강화하고, 추론 요약과 Fable 5.1의 preserved thinking 도입, 미지원 국가 운영 징후 시 신원 확인 요구 <span class="pg">pp.153–154</span></li>
@@ -446,6 +448,6 @@ footer p{max-width:74ch}
 
 </main>
 <nav class="pn wrap" aria-label="판본 이동"><a href="../misuse/2026-02.html"><span class="lab">이전 판본</span>증류 공격 공개 2026.02</a><a href="../misuse/compare.html"><span class="lab">시리즈</span>누적 비교로 이동</a><span></span></nav>
-<footer class="wrap"><p>국문 요약 · 최종 갱신 2026.09.16. 표의 수치와 사실관계는 각 보고서 원문(PDF 또는 공식 게시 페이지)에서 확인했고, 괄호 안 <span class="pg">p.</span> 표기는 원문 쪽수다. "요약자 주석"으로 표시한 부분은 Anthropic의 서술이 아니라 요약자의 검토 의견이다.</p></footer>
+<footer class="wrap"><p>국문 요약 · 원문 대조 2026.09.16. 수치·귀속·위험 평가는 Anthropic의 공개 보고에 근거하며, 사건의 실재나 비공개 증거를 독립적으로 검증했다는 뜻은 아니다. <span class="pg">p.</span>는 연결된 PDF의 쪽수다. "요약자 주석"과 "변화 해설"은 요약자의 해석이다. <a href="https://github.com/byoungpil-kim/anthropic-safety-archive/blob/main/VERIFICATION.md">검증·수정 기록</a></p></footer>
 </body>
 </html>
