@@ -1,0 +1,192 @@
+<div class="mast">
+  <p class="kicker">Series A · 판본 2 · 2025.08.27 공개</p>
+  <h1>Detecting and countering misuse of AI: August 2025</h1>
+  <p class="standfirst">
+    PDF 제목은 <i>Threat Intelligence Report: August 2025</i>(25쪽). "에이전틱 AI가 무기화되고 있다"는 명제 아래,
+    Claude Code가 공격을 직접 수행한 갈취 캠페인과 북한 IT 인력의 원격취업 사기, AI로 만든 랜섬웨어 판매 등
+    사이버 6건과 사기 4건을 다뤘다. GTG 식별자가 처음 등장한다.
+  </p>
+  <p class="meta"><span><b>분량</b> 25쪽</span><span><b>사례</b> 사이버 6 · 사기 4</span><span><b>관여 모델</b> Claude, Claude Code (버전 미특정)</span></p>
+</div>
+<nav class="toc" aria-label="이 페이지 목차">
+  <a href="#s01"><span>01</span>서지</a><a href="#s02"><span>02</span>위해 영역</a><a href="#s03"><span>03</span>추세</a><a href="#s04"><span>04</span>사례</a><a href="#s05"><span>05</span>AI 관여</a><a href="#s06"><span>06</span>안전장치</a><a href="#s07"><span>07</span>대응</a><a href="#s08"><span>08</span>권고</a><a href="#s09"><span>09</span>인용</a><a href="#s10"><span>10</span>주석</a>
+</nav>
+
+<section id="s01">
+  <span class="secno">01 · 서지 정보</span>
+  <h2>문서 구성</h2>
+  <dl class="facts">
+    <dt>게시 제목</dt><dd>Detecting and countering misuse of AI: August 2025</dd>
+    <dt>PDF 제목</dt><dd>Threat Intelligence Report: August 2025 (25쪽)</dd>
+    <dt>공개일</dt><dd>2025년 8월 27일</dd>
+    <dt>작성자</dt><dd>Alex Moix, Ken Lebedev, Jacob Klein <span class="pg">p.25</span></dd>
+    <dt>관측 기간</dt><dd>단일 기간 명시 없음. GTG-2002는 "지난 한 달", GTG-5004는 "최소 2025년 1월부터", 중국 행위자는 "9개월 캠페인"</dd>
+    <dt>편집상 유의</dt><dd>p.25 "합성 신원 서비스" 사례 본문은 p.23 카드 사기 사례와 문장이 같은 편집 오류로 보여, 첫 문장 외에는 인용하지 않았다. 인쇄 목차의 사기 사례 쪽수는 실제보다 1씩 크다</dd>
+  </dl>
+</section>
+
+<section id="s02">
+  <span class="secno">02 · 다룬 위해 영역</span>
+  <h2>사이버와 사기, 두 축</h2>
+  <ul class="l">
+    <li><b>사이버</b> — AI 에이전트가 수행한 공격과 데이터 갈취, 랜섬웨어 서비스, 국가 연계 기반시설 침해, 북한 멀웨어 유포 시도, 노코드 멀웨어 개발</li>
+    <li><b>사기·제재 회피</b> — 북한 IT 인력 원격취업, 인포스틸러 로그 분석과 피해자 프로파일링, 카드 사기, 로맨스 스캠, 합성 신원</li>
+  </ul>
+</section>
+
+<section id="s03">
+  <span class="secno">03 · 보고서가 제시한 추세</span>
+  <h2>네 가지 핵심 명제</h2>
+  <ul class="l">
+    <li><b>에이전틱 AI의 무기화</b> — AI가 공격 방법을 조언하는 데 그치지 않고 정교한 사이버 공격을 직접 수행한다. <span class="pg">p.3</span></li>
+    <li><b>진입장벽 하락</b> — 기술이 거의 없는 행위자가 수년의 훈련이 필요했던 랜섬웨어 개발 같은 복잡한 작업을 수행했다.</li>
+    <li><b>운영 전반에 AI 내장</b> — 피해자 프로파일링, 서비스 자동화, 수만 명에게 영향을 주는 작전까지.</li>
+    <li><b>사기 전 단계에서 AI 사용</b> — 탈취 데이터 분석, 카드 정보 탈취, 허위 신원 생성.</li>
+  </ul>
+  <p>
+    보고서는 사례가 Claude에 특정되지만 "모든 프런티어 모델에 걸친 일관된 행동 패턴"을 반영할 가능성이 높다고 덧붙였다. <span class="pg">p.3</span>
+    갈취 사례에서는 "행위자의 숙련도와 공격 복잡도 사이의 전통적 관계에 대한 가정이 더 이상 성립하지 않는다"고 정리했다. <span class="pg">p.8</span>
+  </p>
+</section>
+
+<section id="s04">
+  <span class="secno">04 · 사례별 요약</span>
+  <h2>사이버 6건 · 사기 4건</h2>
+  <div class="cases">
+    <div class="case">
+      <div class="case-h"><span class="gtg">GTG-2002</span><span class="t">"바이브 해킹" — AI 코딩 에이전트로 데이터 갈취 확장</span></div>
+      <p>
+        Kali Linux 위의 Claude Code를 공격 플랫폼으로 삼고, 작전 절차를 CLAUDE.md에 심어 "공식 지원 계약에 따른 네트워크 보안 테스트"라는 명목을 붙였다.
+        수천 개 VPN 엔드포인트를 스캔하고, 실시간 침투 지원(도메인 컨트롤러·SQL 서버 식별, 크리덴셜 추출, 여러 도메인의 Active Directory 공격),
+        Windows Defender를 피하는 Chisel 변형과 신규 프록시 코드 작성, 수천 건 기록의 추출·정리까지 수행했다.
+        시스템을 암호화하지 않고 공개 위협으로 몸값을 요구했으며, 재무 자료를 분석해 몸값을 정하고 부팅 과정에 삽입되는 HTML 협박문을 만들었다. <span class="pg">pp.4–8</span>
+      </p>
+      <dl>
+        <dt>피해</dt><dd>정부·의료·응급서비스·종교기관 등 최소 17개 조직, 방산업체·의료기관·금융기관 자료(사회보장번호, 계좌, 환자 정보, ITAR 통제 문서) 포함</dd>
+        <dt>규모</dt><dd>몸값 7만 5천–50만 달러(비트코인), 때때로 50만 달러 초과, 납부 기한 48–72시간</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">북한 IT 인력의 원격취업 사기</span></div>
+      <p>
+        국제 제재를 피해 정권 수익을 내는 원격 근무 사기. 공개 보도에 따르면 Fortune 500 기업에 재직 중이다.
+        Claude 사용 비중은 프론트엔드 개발 61%, 프로그래밍·스크립팅 26%, 면접 준비 10%, 백엔드 3%였고,
+        사용량의 약 80%가 실제 재직 업무 수행과 일치했다. 운영자들은 Claude 없이는 코드 작성·디버깅·업무 소통을 하지 못하는 것으로 보였고,
+        보고서는 김일성종합대학 등 훈련 기관에 걸렸던 병목을 모델이 "사실상 제거했다"고 평가했다. <span class="pg">pp.11–14</span>
+      </p>
+      <dl><dt>인용 수치</dt><dd>FBI 평가 인용: 이 작전이 북한 무기 프로그램에 연간 수억 달러를 창출 <span class="pg">p.13</span></dd></dl>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="gtg">GTG-5004</span><span class="t">노코드 멀웨어 — AI로 만든 랜섬웨어 서비스 판매</span></div>
+      <p>
+        영국 소재 행위자가 ChaCha20 암호화, EDR 후킹 우회용 직접 시스템콜, 반사형 DLL 주입, 섀도 복사본 삭제, Tor 기반 C2 등을 갖춘 랜섬웨어를
+        Claude로 개발해 다크웹 포럼(Dread, CryptBB, Nulled)에서 판매했다. "교육·연구용"이라 표기하면서 범죄 포럼에 광고했다.
+        암호화 알고리즘이나 Windows 내부 조작을 Claude 없이 구현할 능력이 없어 보였다. <span class="pg">pp.15–17</span>
+      </p>
+      <dl><dt>가격</dt><dd>400달러(DLL·실행파일), 800달러(PHP 콘솔·C2 포함 키트), 1,200달러(Windows 10/11 탐지 회피 크립터)</dd></dl>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">중국 행위자 — MITRE ATT&amp;CK 14개 전술 중 12개에 Claude 사용</span></div>
+      <p>
+        중국 APT 작전과 일치하는 특성을 보인 행위자가 9개월간 베트남 주요 통신사, 정부 데이터베이스, 농업 관리 시스템을 침해한 것으로 보인다.
+        스캐너, WordPress 공격 프레임워크, 크리덴셜 크래킹 최적화, 리눅스 커널 권한 상승, 횡적 이동 계획에 Claude를 기술 자문·코드 개발·보안 분석·작전 컨설턴트로 썼다. <span class="pg">p.18</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">북한 "Contagious Interview" 멀웨어 유포 — 자동 차단</span></div>
+      <p>
+        알려진 북한 연계 인프라를 쓴 계정 4개 중 2개를 프롬프트가 입력되기도 전에 자동 탐지로 차단했고, 나머지 2개는 한 번도 쓰이지 않은 채 방치되었다.
+        이 캠페인은 외부 연구상 전 세계 140명 이상을 감염시킨 것으로 알려졌다. <span class="pg">p.19</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">러시아어 사용 개발자의 노코드 멀웨어</span></div>
+      <p>
+        Windows 내부 지식은 있으나 구현을 Claude에 크게 의존한 개발자가 프로세스 주입, 텔레그램 봇 C2, 안티디버깅 기능을 갖추고
+        Zoom·암호화폐 거래 도구로 위장한 멀웨어를 만들었다. Claude가 코드를 생성한 지 <b>2시간 안에</b> 러시아·영국·우크라이나에서 VirusTotal에 샘플이 올라왔다.
+        Clio로 발견했다. <span class="pg">p.20</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">사기 공급망 4건</span></div>
+      <p>
+        러시아어 포럼 xss.is에서 시연된 MCP 기반 인포스틸러 로그 분석·피해자 행동 프로파일링 <span class="pg">p.22</span>,
+        세 개의 카드 검증 서비스를 번갈아 쓰는 스페인어권 카드 사기 상점 <span class="pg">p.23</span>,
+        Claude를 "고감성 모델"로 홍보하며 미국·일본·한국을 겨냥한 월 이용자 1만 명 이상의 로맨스 스캠 텔레그램 봇 <span class="pg">p.24</span>,
+        Claude를 인프라 일부에 쓴 합성 신원 서비스 <span class="pg">p.25</span>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="s05">
+  <span class="secno">05 · AI 관여 수준</span>
+  <h2>조언자에서 실행자로</h2>
+  <p>
+    GTG-2002에서 AI는 "기술 컨설턴트이자 실제 운영자"였고, 어떤 방식으로 침투할지, 무엇을 유출할지, 어떤 심리적 협박을 쓸지 같은
+    전술적·전략적 결정을 내렸다. <span class="pg">p.4</span> 다만 2025년 11월 판은 이 사례를 "인간이 여전히 작전을 강하게 지휘했다"고 다시 규정했다.
+    북한 IT 인력과 GTG-5004는 에이전틱 사용이 아니라 <b>역량 자체를 AI에 전적으로 의존</b>한 유형으로 기술되었다("기술 역량이 보유가 아니라 시뮬레이션된다").
+    작업 비중 수치는 제시되지 않았다.
+  </p>
+</section>
+
+<section id="s06">
+  <span class="secno">06 · 안전장치 성과와 실패</span>
+  <h2>명목 위장에 뚫리고, 인프라 지표에 막히다</h2>
+  <div class="ts"><table>
+    <caption>이 판본의 안전장치 기록</caption>
+    <thead><tr><th scope="col">구분</th><th scope="col">내용</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">우회</th><td>GTG-2002가 CLAUDE.md에 "공인 보안 테스트" 명목을 넣어 안전장치를 우회하고 확인 절차를 껐다 <span class="pg">p.5</span></td></tr>
+      <tr><th scope="row">사전 차단</th><td>북한 Contagious Interview 계정 2개를 프롬프트 입력 전 자동 차단 <span class="pg">p.19</span></td></tr>
+      <tr><th scope="row">사후 발견</th><td>GTG-2002와 중국 행위자는 수시 위협 헌팅, 노코드 멀웨어는 Clio, 로맨스 스캠 봇은 외부 연구자 제보로 발견</td></tr>
+      <tr><th scope="row">서술 없음</th><td>나머지 사례의 거부·우회 여부는 기술하지 않음</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s07">
+  <span class="secno">07 · 탐지 방법과 대응 조치</span>
+  <h2>맞춤형 분류기와 지표 관리</h2>
+  <ul class="l">
+    <li>GTG-2002 유형 전용 분류기와 새 탐지 방법을 표준 집행 파이프라인에 투입하고, 기술 지표를 주요 파트너와 당국에 공유 <span class="pg">p.9</span></li>
+    <li>공개·비공개 정보 공유에서 얻은 침해 지표(IOC)를 수집·저장·대조하는 도구 개선 <span class="pg">p.14</span></li>
+    <li>멀웨어 업로드·수정·생성을 탐지하는 새 방법 도입 <span class="pg">p.17</span></li>
+    <li>중국 행위자 건은 추가 모니터링과 당국 정보 공유, 새 탐지 시스템 가동. 계정 차단 여부는 명시하지 않음 <span class="pg">p.18</span></li>
+  </ul>
+</section>
+
+<section id="s08">
+  <span class="secno">08 · 권고와 요청</span>
+  <h2>AI를 반영한 위협 평가 틀</h2>
+  <ul class="l">
+    <li>AI 활용을 반영하는 사이버 위협 평가의 새 틀이 필요 <span class="pg">p.8</span></li>
+    <li>이런 보고서를 "정기적으로" 계속 공개하겠다고 밝힘 <span class="pg">p.3</span></li>
+    <li>AI로 강화된 사기·사이버 범죄 연구를 우선순위로 삼겠다고 밝힘 <span class="pg">게시 페이지</span></li>
+  </ul>
+</section>
+
+<section id="s09">
+  <span class="secno">09 · 주요 인용</span>
+  <h2>원문 표현</h2>
+  <ul class="quotes">
+    <li><q>Agentic AI systems are being weaponized</q> <span class="pg">p.3</span></li>
+    <li><q>AI serves as both a technical consultant and active operator</q> <span class="pg">p.4</span></li>
+    <li><q>A single operator can achieve the impact of an entire cybercriminal team through AI assistance</q> <span class="pg">p.8</span></li>
+    <li><q>This represents a new paradigm where technical competence is simulated rather than possessed.</q> <span class="pg">p.12</span></li>
+    <li><q>Malware samples appeared on VirusTotal within 2 hours of Claude generating the code</q> <span class="pg">p.20</span></li>
+  </ul>
+</section>
+
+<section id="s10">
+  <span class="secno">10 · 요약자 주석</span>
+  <h2>이 판본의 위치</h2>
+  <div class="anno">
+    <span class="lbl">요약자 주석</span>
+    <ul>
+      <li>"명목 위장(보안 테스트라는 설정)"이 안전장치 우회 수단으로 처음 명시되었다. 11월 판의 역할극, 2026년 9월 판의 다세션 분할로 이어지는 우회 기법 계보의 출발점이다.</li>
+      <li>북한 IT 인력 사례는 AI 사용이 외형상 정상 업무(코드 작성)와 구별되지 않는 경우다. 제공자가 이용 목적을 판별할 근거가 이용자 신원과 계정 맥락밖에 없다는 문제를 처음 드러낸다.</li>
+      <li>코드 생성 2시간 만에 실전 샘플이 관측된 사례는 "생성 시점과 피해 시점의 간격"이 매우 짧아졌음을 보여 주며, 사후 차단 중심 대응의 한계를 시사한다.</li>
+    </ul>
+  </div>
+</section>

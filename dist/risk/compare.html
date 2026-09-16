@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Risk Report 누적 비교</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#eef0f3; --surface:#ffffff; --surface-2:#f5f6f8;
+  --ink:#161a1f; --ink-2:#3a424e; --muted:#646d7b;
+  --line:#d2d7de; --line-soft:#e3e7ec;
+  --a:#1d4e6f; --a-soft:#e1ebf1;
+  --b:#4a3f7a; --b-soft:#e9e6f3;
+  --signal:#9e3f2a; --signal-soft:#f6e6e1;
+  --good:#2f6b4f; --good-soft:#e2efe8;
+  --serif:"Noto Serif KR",Batang,"AppleMyungjo",serif;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+    --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+    --line:#2f3741; --line-soft:#272e37;
+    --a:#7fb6d6; --a-soft:#1b2b37;
+    --b:#aea4e6; --b-soft:#26223a;
+    --signal:#e0917a; --signal-soft:#34241f;
+    --good:#86c2a2; --good-soft:#1d2d25;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+  --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+  --line:#2f3741; --line-soft:#272e37;
+  --a:#7fb6d6; --a-soft:#1b2b37;
+  --b:#aea4e6; --b-soft:#26223a;
+  --signal:#e0917a; --signal-soft:#34241f;
+  --good:#86c2a2; --good-soft:#1d2d25;
+}
+/* 시리즈 강조색: body[data-series] 로 전환 */
+body{--acc:var(--ink-2); --acc-soft:var(--surface-2)}
+body[data-series="A"]{--acc:var(--a); --acc-soft:var(--a-soft)}
+body[data-series="B"]{--acc:var(--b); --acc-soft:var(--b-soft)}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.72;
+  -webkit-text-size-adjust:100%; word-break:keep-all; overflow-wrap:break-word;
+}
+.wrap{max-width:1120px; margin:0 auto; padding-inline:20px}
+
+/* ---- top bar ---- */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.tb1{display:flex; align-items:center; gap:14px; min-height:46px; flex-wrap:wrap}
+.home{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); text-decoration:none; white-space:nowrap}
+.home:hover{color:var(--acc)}
+.serieslinks{display:flex; gap:4px; margin-left:auto; flex-wrap:wrap}
+.serieslinks a{font-size:12.5px; text-decoration:none; color:var(--ink-2); padding:3px 9px; border-radius:2px; border:1px solid transparent}
+.serieslinks a.on{border-color:var(--line); background:var(--surface)}
+.serieslinks a.sa{color:var(--a)} .serieslinks a.sb{color:var(--b)}
+.tb2{display:flex; gap:2px; flex-wrap:wrap; padding-bottom:8px}
+.tb2 a{font-family:var(--mono); font-size:12px; color:var(--ink-2); text-decoration:none; padding:3px 8px; border-radius:2px}
+.tb2 a:hover{background:var(--acc-soft); color:var(--acc)}
+.tb2 a.cur{background:var(--acc); color:var(--surface)}
+a:focus-visible{outline:2px solid var(--acc); outline-offset:2px}
+
+/* ---- masthead ---- */
+.mast{padding-block:40px 26px; border-bottom:2px solid var(--ink)}
+.kicker{font-family:var(--mono); font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--acc); margin:0 0 12px}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(27px,5vw,42px); line-height:1.25; margin:0 0 14px; letter-spacing:-.01em; text-wrap:balance}
+.standfirst{font-size:16.5px; color:var(--ink-2); max-width:64ch; margin:0 0 18px}
+.meta{display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12px; color:var(--muted); margin:0}
+.meta b{font-weight:500; color:var(--ink-2)}
+
+/* ---- local toc ---- */
+.toc{display:flex; flex-wrap:wrap; gap:4px 14px; padding-block:14px; border-bottom:1px solid var(--line-soft); font-size:13px}
+.toc a{color:var(--ink-2); text-decoration:none}
+.toc a:hover{color:var(--acc)}
+.toc span{font-family:var(--mono); font-size:11px; color:var(--muted); margin-right:4px}
+
+/* ---- sections ---- */
+section{padding-block:32px; border-bottom:1px solid var(--line-soft)}
+section:last-of-type{border-bottom:0}
+.secno{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+h2{font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,26px); line-height:1.35; margin:0 0 10px; text-wrap:balance}
+h3{font-size:16px; font-weight:600; margin:24px 0 8px}
+h4{font-size:14px; font-weight:600; margin:16px 0 6px; color:var(--ink-2)}
+p{margin:0 0 12px; max-width:70ch}
+.lede{font-size:16px; color:var(--ink-2); max-width:66ch}
+a{color:var(--acc)}
+code,.m{font-family:var(--mono); font-size:.87em}
+.gtg{font-family:var(--mono); font-size:.86em; color:var(--acc); white-space:nowrap}
+.pg{font-family:var(--mono); font-size:.8em; color:var(--muted); white-space:nowrap}
+ul.l{margin:6px 0 12px; padding-left:19px; max-width:70ch}
+ul.l li{margin-bottom:6px; color:var(--ink-2)}
+ul.l li b{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- tables ---- */
+.ts{overflow-x:auto; margin:14px 0 8px; border:1px solid var(--line); border-radius:2px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+table.w{min-width:760px}
+caption{text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); padding:11px 14px 2px}
+th,td{padding:9px 13px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line-soft); line-height:1.6}
+thead th{background:var(--surface-2); font-weight:600; font-size:12.5px; border-bottom:1px solid var(--line); white-space:nowrap}
+thead th.cur{color:var(--acc)}
+tbody th{font-weight:600; font-size:12.5px; color:var(--ink-2); background:var(--surface-2); min-width:120px}
+tbody tr:last-child th, tbody tr:last-child td{border-bottom:0}
+td.na{color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+
+/* ---- chips ---- */
+.chip{display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; padding:1px 6px; border-radius:2px; vertical-align:1px; white-space:nowrap}
+.chip.up{color:var(--signal); background:var(--signal-soft)}
+.chip.new{color:var(--signal); background:var(--signal-soft)}
+.chip.same{color:var(--muted); background:var(--surface-2); border:1px solid var(--line-soft)}
+.chip.ok{color:var(--good); background:var(--good-soft)}
+.chip.s{color:var(--acc); background:var(--acc-soft)}
+
+/* ---- cards / cases ---- */
+.cases{display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line); border-radius:2px; margin:14px 0}
+.case{background:var(--surface); padding:14px 16px}
+.case-h{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:5px}
+.case-h .t{font-weight:600; font-size:14.5px}
+.case p{margin:0 0 6px; font-size:13.8px; color:var(--ink-2); max-width:none}
+.case p:last-child{margin-bottom:0}
+.case dl{margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:3px 12px; font-size:12.8px}
+.case dt{font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:2px; white-space:nowrap}
+.case dd{margin:0; color:var(--ink-2)}
+
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; margin:14px 0}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:16px 18px}
+.panel h3{margin-top:0}
+.panel p{font-size:14px; color:var(--ink-2)}
+
+.facts{display:grid; grid-template-columns:auto 1fr; gap:6px 16px; margin:12px 0; font-size:14px; max-width:780px}
+.facts dt{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding-top:3px; white-space:nowrap}
+.facts dd{margin:0; color:var(--ink-2)}
+
+/* ---- annotation & quotes ---- */
+.anno{background:var(--acc-soft); border-left:3px solid var(--acc); border-radius:2px; padding:14px 18px; margin:16px 0 0}
+.anno .lbl{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+.anno p,.anno li{font-size:14px; color:var(--ink-2)}
+.anno p:last-child{margin-bottom:0}
+.anno ul{margin:4px 0 0; padding-left:19px}
+.anno li{margin-bottom:5px}
+.quotes{margin:12px 0; padding:0; list-style:none; max-width:74ch}
+.quotes li{border-left:2px solid var(--line); padding:2px 0 2px 14px; margin-bottom:10px; font-size:14px; color:var(--ink-2)}
+.quotes q{font-style:italic; color:var(--ink)}
+
+/* ---- series cards on hub ---- */
+.series{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; margin:18px 0}
+.scard{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--sc); border-radius:2px; padding:18px 20px}
+.scard.sa{--sc:var(--a)} .scard.sb{--sc:var(--b)}
+.scard h3{font-family:var(--serif); font-size:20px; margin:2px 0 6px}
+.scard .tag{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--sc)}
+.scard p{font-size:14px; color:var(--ink-2)}
+.eds{list-style:none; margin:12px 0 0; padding:0; border-top:1px solid var(--line-soft)}
+.eds li{display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:14px}
+.eds li .d{font-family:var(--mono); font-size:12px; color:var(--muted); min-width:84px}
+.eds a{text-decoration:none; color:var(--ink)}
+.eds a:hover{color:var(--sc)}
+.cta{display:inline-block; margin-top:14px; font-size:13.5px; font-weight:600; color:var(--sc); text-decoration:none; border:1px solid var(--sc); padding:6px 12px; border-radius:2px}
+.cta:hover{background:var(--sc); color:var(--surface)}
+
+/* ---- prev/next ---- */
+.pn{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-block:18px; border-top:1px solid var(--line)}
+.pn a{font-size:13.5px; text-decoration:none; color:var(--acc)}
+.pn .lab{display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); letter-spacing:.08em}
+
+/* ---- figure ---- */
+.fig{margin:16px 0 6px; background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:12px}
+.fig svg{display:block; width:100%; height:auto}
+.figcap{font-size:12.5px; color:var(--muted); margin:8px 0 0; max-width:74ch}
+.sv-grid{stroke:var(--line-soft); stroke-width:1}
+.sv-axis{stroke:var(--ink-2); stroke-width:1.2}
+.sv-bar{fill:var(--acc)}
+.sv-bar2{fill:var(--signal)}
+.sv-t{fill:var(--ink); font-family:"IBM Plex Sans KR",sans-serif; font-size:12px; font-weight:600}
+.sv-s{fill:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:10.5px}
+
+footer{padding-block:26px 44px; color:var(--muted); font-size:12.5px}
+footer p{max-width:74ch}
+
+@media (max-width:640px){
+  body{font-size:15px}
+  .topbar{position:static}
+  html{scroll-padding-top:12px}
+  .mast{padding-block:28px 22px}
+  .serieslinks{margin-left:0}
+  .facts{grid-template-columns:1fr; gap:0 0}
+  .facts dt{padding-top:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+</style>
+</head>
+<body data-series="B">
+<header class="topbar"><div class="wrap">
+<div class="tb1">
+<a class="home" href="../index.html">Anthropic 안전 보고서 아카이브</a>
+<nav class="serieslinks" aria-label="보고서 시리즈"><a class="sa" href="../misuse/compare.html">오용 위협보고서</a><a class="sb on" href="../risk/compare.html">RSP Risk Report</a></nav>
+</div>
+<nav class="tb2" aria-label="판본"><a class="cur" aria-current="page" href="../risk/compare.html">누적 비교</a><a href="../risk/2026-02.html">2026.02</a><a href="../risk/2026-08.html">2026.08</a></nav>
+</div></header>
+<main class="wrap">
+<div class="mast">
+  <p class="kicker">Series B · 누적 비교 · 2개 판본</p>
+  <h1>Risk Report 누적 비교</h1>
+  <p class="standfirst">
+    RSP 제3.3조가 정한 항목 순서대로 판본을 나란히 놓았다. 가장 먼저 볼 것은 위험 등급의 변화이며, 다음 판본이 나오면 각 표 오른쪽에 열을 더한다.
+  </p>
+  <p class="meta"><span><b>수록</b> 2026.02 · 2026.08</span><span><b>다음 예정</b> RSP상 직전 공개 후 3–6개월 이내</span></p>
+</div>
+<nav class="toc" aria-label="이 페이지 목차">
+  <a href="#k06"><span>06</span>위험 등급</a><a href="#k01"><span>01</span>서지</a><a href="#k02"><span>02</span>대상 모델</a><a href="#k03"><span>03</span>임계치</a><a href="#k04"><span>04</span>증거</a><a href="#k05"><span>05</span>완화</a><a href="#k07"><span>07</span>사고</a><a href="#k08"><span>08</span>변경 검토</a><a href="#k10"><span>10</span>외부 검토</a><a href="#k12"><span>12</span>종합</a>
+</nav>
+
+<section id="k06">
+  <span class="secno">06 · 위험 평가 (먼저 보기)</span>
+  <h2>위험 등급의 추이</h2>
+  <div class="ts"><table class="w">
+    <caption>위험 모델 × 판본</caption>
+    <thead><tr><th scope="col">위험 모델</th><th scope="col"><a href="2026-02.html">2026.02</a></th><th scope="col" class="cur"><a href="2026-08.html">2026.08</a></th><th scope="col">변화</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">자율성 1 (사보타주 → 오정렬)</th><td>매우 낮으나 무시할 수준은 아님</td><td>낮음</td><td><span class="chip up">상향</span> 사이버 평가 사고 공개에 따른 불확실성</td></tr>
+      <tr><th scope="row">자율성 2 (자동화된 R&amp;D)</th><td>매우 낮음 — "회색 지대"</td><td>낮음 — 확신 하락, 6–12개월 내 주요 우려 가능</td><td><span class="chip up">상향</span> 평가 포화, 초기 가속 신호</td></tr>
+      <tr><th scope="row">화학·생물 1 (기존 무기)</th><td>매우 낮으나 무시할 수준은 아님</td><td>낮음, 이전 추정보다 높음 (2월 시점도 "낮음"으로 소급)</td><td><span class="chip up">상향</span> 외주 인력 접근 통제 공백</td></tr>
+      <tr><th scope="row">화학·생물 2 (신종 무기)</th><td>낮음, 상당한 불확실성</td><td>낮음, 상당한 불확실성 — 임계치 "비교적 근접"</td><td><span class="chip same">유지</span> 가까운 시일 내 도달 예상</td></tr>
+      <tr><th scope="row">전체 판단</th><td>우선순위 위험 모두 낮음</td><td>자율성·화학생물 위험 현재 낮음, 화학생물은 논쟁 여지 상당</td><td><span class="chip same">유지</span></td></tr>
+      <tr><th scope="row">위험-편익</th><td>사회적 비용-편익 검토 통과</td><td>사회적 비용-편익 검토 통과, 가속 기여 인정</td><td><span class="chip same">유지</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede">
+    <b>변화 해설.</b> 네 위험 중 세 위험의 원문 등급 표현이 한 단계 올라갔다. 다만 명시적으로 "상향"이라고 선언한 것은 오정렬과 화학·생물 1 두 항목이다.
+    자동화된 R&amp;D는 2월 원문 "very low"가 8월 원문 "Low"로 바뀌었으나, 8월 판은 이를 상향이라 부르지 않고 "이전 보고서보다 확신이 낮다"고만 적었다.
+    표의 해당 "상향" 표시는 원문 표현의 변화를 기준으로 한 요약자의 분류다. 화학·생물 1은 2월 시점의 위험까지 "낮음"으로 소급 재평가했다는 점에서 특히 주목할 만하다.
+  </p>
+</section>
+
+<section id="k01">
+  <span class="secno">01 · 서지 정보</span>
+  <h2>문서 형식</h2>
+  <div class="ts"><table class="w">
+    <caption>판본 메타데이터</caption>
+    <thead><tr><th scope="col">항목</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">공개일</th><td class="n">2026.02.24</td><td class="n">2026.08.14</td></tr>
+      <tr><th scope="row">RSP 근거</th><td>v3.0 (첫 보고서)</td><td>v3.4</td></tr>
+      <tr><th scope="row">분량</th><td>104쪽 → 106쪽(두 차례 개정)</td><td>186쪽</td></tr>
+      <tr><th scope="row">기준일·대상 기간</th><td>명시 없음</td><td>기준일 2026.07.15, 대상 2026.02.24–07.15</td></tr>
+      <tr><th scope="row">섹션 구성</th><td>위험 모델 4개를 각각 독립 섹션</td><td>화학·생물 1·2 통합, "안전 절차 실패" 절 신설</td></tr>
+      <tr><th scope="row">비공개 처리</th><td>지식재산·공공 안전 사유로 일부 비공개</td><td>상위 수준 공개 의무화, 사유별 표시 확대</td></tr>
+      <tr><th scope="row">승인 주체 명시</th><td class="na">없음</td><td class="na">없음</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="k02">
+  <span class="secno">02 · 대상 모델</span>
+  <h2>대표 모델의 이동</h2>
+  <div class="ts"><table class="w">
+    <caption>대표·주요 모델</caption>
+    <thead><tr><th scope="col">구분</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">대표 모델</th><td>Claude Opus 4.6</td><td>Claude Mythos 5 (오정렬은 Model 2 포함)</td></tr>
+      <tr><th scope="row">내부 모델</th><td>Opus 4.6 역량을 넘는 내부 모델 없음</td><td>Model 1, Model 2(Mythos 5보다 다소 유능), 기준일 당시 Opus 5</td></tr>
+      <tr><th scope="row">보호 등급 체계</th><td>ASL-2 / ASL-3</td><td>분류기 견고성 Level 1–3</td></tr>
+      <tr><th scope="row">제한 배포</th><td>Claude Gov(분류기 없음)</td><td>Project Glasswing(Mythos 계열 초청제), Claude Gov, helpful-only 외부 6개 기관 48명</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="k03">
+  <span class="secno">03 · 위험 모델과 임계치</span>
+  <h2>임계치 정의의 변화</h2>
+  <div class="ts"><table class="w">
+    <caption>임계치 정의</caption>
+    <thead><tr><th scope="col">위험 모델</th><th scope="col">2026.02 (RSP v3.0)</th><th scope="col" class="cur">2026.08 (RSP v3.4)</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">자율성 1</th><td>"사보타주", 8개 경로</td><td>"고위험 환경의 오정렬", 8개 경로 + 8개 주장 구조</td></tr>
+      <tr><th scope="row">자율성 2</th><td>최상위 연구팀의 작업을 완전히 자동화하거나 극적으로 가속하는 역량 (8월 판은 v3.0의 발동 시점을 "2018–2024년의 2년치 진전을 1년에 압축"으로 설명)</td><td>연구진 전체의 경쟁력 있는 대체 또는 진전 속도 2배의 극적 가속</td></tr>
+      <tr><th scope="row">화학·생물 1</th><td>학부 수준 행위자에 대한 상당한 조력</td><td>동일</td></tr>
+      <tr><th scope="row">화학·생물 2</th><td>전문가 지원 조직에 대한 상당한 조력</td><td>세계적 전문가 수백 명 수준의 희소 전문성을 기능적으로 대체</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 임계치 정의가 바뀌었기 때문에 등급을 비교할 때는 "같은 기준에서의 위험 변화"가 아니라 "기준과 위험이 함께 바뀐 결과"로 읽어야 한다.</p>
+</section>
+
+<section id="k04">
+  <span class="secno">04 · 역량·행동 증거</span>
+  <h2>평가 근거의 이동</h2>
+  <div class="ts"><table class="w">
+    <caption>대표 증거</caption>
+    <thead><tr><th scope="col">위험 모델</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">오정렬</th><td>SHADE-Arena 은밀 성공 18%(사고 과정 감시)·16%(사고 과정 없음), 일부 평가는 역량 유도 부족</td><td>다수 모델 1% 미만, 유도 강화 시 Mythos 5 최대 9.2%. 무모한 행동 사례 공개, 기준일 이후 UK AISI 사이버 평가 사건</td></tr>
+      <tr><th scope="row">자동화된 R&amp;D</th><td>평가 대부분 포화, 연구 평가 0.613(임계 0.6), 커널 427배(임계 300배), 설문 16명 중 대체 가능 응답 0명</td><td>과제형 평가 "포화"로 CoBench 신설, 새 설문 없음(이전 모델 기준 생산성 약 4배), 가속은 2배 미만, 31명 분야별 인터뷰</td></tr>
+      <tr><th scope="row">화학·생물 1</th><td>향상 실험 2.53배(임계 2.8배, Opus 4 결과), 바이러스학 과제 0.912(임계 0.8)</td><td>Opus 4 이후 모델은 충족으로 간주, 무작위 대조 연구로 초기 모델 위험 소폭 하향</td></tr>
+      <tr><th scope="row">화학·생물 2</th><td>향상 실험 치명적 실패 평균 5.6건(배제 기준 1.8건 이상), 새로운 통찰은 내지 못함</td><td>Mythos 5가 평가된 모델 중 가장 강함, 개방형 설계·전략 판단이 약점, 한 사례에서 성공 가능성 "대략 두 배" 추정</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 2월에 이미 "포화"로 표현된 R&amp;D 평가는 8월에 새 평가(CoBench)와 역량 지수 추세, 분야별 전문가 인터뷰로 대체되었다. 정량 임계치로 판단하기 어려워질수록 근거가 설문·인터뷰·추세로 옮겨가며, 외부 검증 가능성은 낮아진다.</p>
+</section>
+
+<section id="k05">
+  <span class="secno">05 · 완화 조치</span>
+  <h2>완화 조치의 변화</h2>
+  <div class="ts"><table class="w">
+    <caption>영역별 완화</caption>
+    <thead><tr><th scope="col">영역</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">보안</th><td>ASL-3 프로그램으로 대부분 비국가 공격자 방어. 국가 후원 공격·정교한 내부자는 범위 밖</td><td>같은 한계를 유지하며 "어떤 프런티어 개발자도 국가급 방어 기준을 충족하지 못한다"고 명시. 가중치 보관 기준 일부 완화</td></tr>
+      <tr><th scope="row">배포 안전장치</th><td>Constitutional Classifiers 실시간 분류기, 오프라인 모니터링 축소, 면제 수작업 심사, 버그바운티 최대 4만 5천 달러</td><td>Level 1–3 체계, 신종 무기 용도까지 적용 확대, Fable 5 넓은 분류기, 3월 이후 8만 7,800달러 지급·21건, Mythos급은 분류기 없는 상업 접근 불허</td></tr>
+      <tr><th scope="row">내부 모니터링</th><td>Claude Code 요청 10% 이상 오프라인 점검(Opus 4.5 기반), 주당 약 1만 건 탐지, 합성 공격 재현율 91%</td><td>1차 모니터를 Opus 4.8로 상향, METR 레드팀 공격 재현율 78%→94%, 주당 약 50건 사람 검토</td></tr>
+      <tr><th scope="row">절차</th><td>코드 수동·자동 검토, 직원 신고</td><td>내부 배포 전 검토 절차 신설, 권한 확인 생략 차단, "모든 것을 보는" 모니터링 목표일 2027.01.01</td></tr>
+      <tr><th scope="row">증류 방어</th><td>가속 동학 항목에서 과제로 언급</td><td>사고 과정 요약에 더해 커넥터 텍스트 요약 도입(Fable 5 한정), 효과는 코딩·사이버에서 뚜렷, 생물학은 혼재</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="k07">
+  <span class="secno">07 · 공개된 사고와 절차 실패</span>
+  <h2>자기 공개의 범위</h2>
+  <div class="ts"><table class="w">
+    <caption>공개 사고 비교</caption>
+    <thead><tr><th scope="col">구분</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">성격</th><td>평가·모니터링의 한계와 서술 오류 중심</td><td>실제 운영 사고 중심, "안전 절차 실패" 절 신설</td></tr>
+      <tr><th scope="row">대표 사례</th><td>설문 서술 누락(외부 검토로 정정), 탈옥 교정 지연, 대표 모델 미평가 항목, 원인 불명의 CBRN 평가 하락</td><td>외주 인력 약 5만 명·1억 3,300만 건의 분류기 미적용, Mythos Preview 무단 접근, 사고 과정 채점 노출(최대 5.1%), 오정렬 행동 학습 버그, 감시 없는 에이전트, 정렬 위장 기록 반복 학습</td></tr>
+      <tr><th scope="row">등급에 준 영향</th><td>없음</td><td>화학·생물 1 등급 상향의 직접 원인</td></tr>
+      <tr><th scope="row">비공개 처리된 사고</th><td class="na">해당 서술 없음</td><td>공공 안전 사유로 1건 전부 비공개</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="k08">
+  <span class="secno">08 · 직전 보고서 이후 변경·결정 검토</span>
+  <h2>검토 조항의 작동</h2>
+  <div class="ts"><table class="w">
+    <caption>변경·결정 검토</caption>
+    <thead><tr><th scope="col">항목</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">검토 대상</th><td>첫 보고서라 없음</td><td>2월 판 대비 실질 검토</td></tr>
+      <tr><th scope="row">완화 관행 변경</th><td>2025 안전장치 보고서 대비 면제 체계·모니터링 변경</td><td>약화(보관 기준, 모니터링 범위)와 강화 항목을 구분해 기재</td></tr>
+      <tr><th scope="row">직전 서술 정정</th><td>METR 지적으로 설문 서술 정정</td><td>2월 판의 사고 과정 인센티브 서술, 인간 피드백 플랫폼 누락, 2월 시점 화학·생물 1 등급</td></tr>
+      <tr><th scope="row">로드맵</th><td>변경 없음</td><td>대부분 달성, 1건 연기·1건 수정(항목은 로드맵 페이지로 이관)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="k10">
+  <span class="secno">10 · 외부 검토</span>
+  <h2>외부 검토의 공백</h2>
+  <div class="ts"><table class="w">
+    <caption>검토 방식</caption>
+    <thead><tr><th scope="col">항목</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.08</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">외부 검토</th><td>METR(R&amp;D), SecureBio(화학·생물) 시범 검토 — 공개 후 수행</td><td>없음. LTBT 요청 없음, RSP상 의무 아님</td></tr>
+      <tr><th scope="row">대체 장치</th><td class="na">—</td><td>Claude Mythos 5의 오정렬 섹션 검토를 전문 수록, METR 직원의 모니터링 레드팀 3주</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="k12">
+  <span class="secno">12 · 종합</span>
+  <h2>누적해서 보이는 것</h2>
+  <div class="anno">
+    <span class="lbl">요약자 주석</span>
+    <ul>
+      <li><b>등급 상향과 임계치 근접.</b> 두 판본 사이에 세 위험의 원문 등급 표현이 올라갔고, 자동화된 R&amp;D와 신종 화학·생물은 가까운 시일 안에 임계치에 이를 수 있다고 예고되었다. 다음 판본의 핵심 비교 지점은 임계치 도달 선언과 그에 따른 완화 기준 충족 여부다.</li>
+      <li><b>위험 원천의 다변화.</b> 2월에는 모델 역량과 평가 한계가 중심이었으나 8월에는 외주 인력·데이터 파이프라인·내부 도구 같은 운영 공백이 등급을 움직였다. 안전 규율의 대상이 모델에서 조직 운영 전반으로 넓어져야 한다는 근거가 누적된다.</li>
+      <li><b>자기 교정과 검증 공백의 병존.</b> 직전 판단의 소급 재평가와 서술 정정은 정기 보고의 장점이지만, 외부 검토가 의무가 아니어서 8월 판은 외부 검토 없이 공개되었다. 규제 설계에서 독립 검토를 요건으로 둘지가 쟁점이다.</li>
+      <li><b>기준의 이동.</b> 임계치 정의가 판본 사이에 바뀌었으므로 등급 비교는 기준 변화와 함께 읽어야 한다. 법정 임계치를 사업자 정책에 연동할 경우 이 가변성을 어떻게 다룰지가 과제다.</li>
+    </ul>
+  </div>
+  <h3>다음 판본이 나오면 확인할 항목</h3>
+  <ul class="l">
+    <li>자동화된 R&amp;D·신종 화학·생물 임계치 도달 선언 여부와 그에 따른 완화 기준(RAND SL4 수준 보안 등) 충족 주장</li>
+    <li>외주 인력 사고 이후 접근 통제 성과, 30일 데이터 보존 요건 도입 여부</li>
+    <li>외부 검토 실시 여부와 LTBT의 역할</li>
+    <li>"모든 것을 보는" 모니터링(2027.01.01 목표) 진척과 로드맵 미달 항목</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap"><p>국문 요약 · 최종 갱신 2026.09.16. 표의 수치와 사실관계는 각 보고서 원문(PDF 또는 공식 게시 페이지)에서 확인했고, 괄호 안 <span class="pg">p.</span> 표기는 원문 쪽수다. "요약자 주석"으로 표시한 부분은 Anthropic의 서술이 아니라 요약자의 검토 의견이다.</p></footer>
+</body>
+</html>

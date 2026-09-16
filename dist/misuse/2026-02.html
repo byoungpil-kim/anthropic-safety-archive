@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>증류 공격 공개 2026.02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#eef0f3; --surface:#ffffff; --surface-2:#f5f6f8;
+  --ink:#161a1f; --ink-2:#3a424e; --muted:#646d7b;
+  --line:#d2d7de; --line-soft:#e3e7ec;
+  --a:#1d4e6f; --a-soft:#e1ebf1;
+  --b:#4a3f7a; --b-soft:#e9e6f3;
+  --signal:#9e3f2a; --signal-soft:#f6e6e1;
+  --good:#2f6b4f; --good-soft:#e2efe8;
+  --serif:"Noto Serif KR",Batang,"AppleMyungjo",serif;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+    --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+    --line:#2f3741; --line-soft:#272e37;
+    --a:#7fb6d6; --a-soft:#1b2b37;
+    --b:#aea4e6; --b-soft:#26223a;
+    --signal:#e0917a; --signal-soft:#34241f;
+    --good:#86c2a2; --good-soft:#1d2d25;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+  --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+  --line:#2f3741; --line-soft:#272e37;
+  --a:#7fb6d6; --a-soft:#1b2b37;
+  --b:#aea4e6; --b-soft:#26223a;
+  --signal:#e0917a; --signal-soft:#34241f;
+  --good:#86c2a2; --good-soft:#1d2d25;
+}
+/* 시리즈 강조색: body[data-series] 로 전환 */
+body{--acc:var(--ink-2); --acc-soft:var(--surface-2)}
+body[data-series="A"]{--acc:var(--a); --acc-soft:var(--a-soft)}
+body[data-series="B"]{--acc:var(--b); --acc-soft:var(--b-soft)}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.72;
+  -webkit-text-size-adjust:100%; word-break:keep-all; overflow-wrap:break-word;
+}
+.wrap{max-width:1120px; margin:0 auto; padding-inline:20px}
+
+/* ---- top bar ---- */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.tb1{display:flex; align-items:center; gap:14px; min-height:46px; flex-wrap:wrap}
+.home{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); text-decoration:none; white-space:nowrap}
+.home:hover{color:var(--acc)}
+.serieslinks{display:flex; gap:4px; margin-left:auto; flex-wrap:wrap}
+.serieslinks a{font-size:12.5px; text-decoration:none; color:var(--ink-2); padding:3px 9px; border-radius:2px; border:1px solid transparent}
+.serieslinks a.on{border-color:var(--line); background:var(--surface)}
+.serieslinks a.sa{color:var(--a)} .serieslinks a.sb{color:var(--b)}
+.tb2{display:flex; gap:2px; flex-wrap:wrap; padding-bottom:8px}
+.tb2 a{font-family:var(--mono); font-size:12px; color:var(--ink-2); text-decoration:none; padding:3px 8px; border-radius:2px}
+.tb2 a:hover{background:var(--acc-soft); color:var(--acc)}
+.tb2 a.cur{background:var(--acc); color:var(--surface)}
+a:focus-visible{outline:2px solid var(--acc); outline-offset:2px}
+
+/* ---- masthead ---- */
+.mast{padding-block:40px 26px; border-bottom:2px solid var(--ink)}
+.kicker{font-family:var(--mono); font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--acc); margin:0 0 12px}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(27px,5vw,42px); line-height:1.25; margin:0 0 14px; letter-spacing:-.01em; text-wrap:balance}
+.standfirst{font-size:16.5px; color:var(--ink-2); max-width:64ch; margin:0 0 18px}
+.meta{display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12px; color:var(--muted); margin:0}
+.meta b{font-weight:500; color:var(--ink-2)}
+
+/* ---- local toc ---- */
+.toc{display:flex; flex-wrap:wrap; gap:4px 14px; padding-block:14px; border-bottom:1px solid var(--line-soft); font-size:13px}
+.toc a{color:var(--ink-2); text-decoration:none}
+.toc a:hover{color:var(--acc)}
+.toc span{font-family:var(--mono); font-size:11px; color:var(--muted); margin-right:4px}
+
+/* ---- sections ---- */
+section{padding-block:32px; border-bottom:1px solid var(--line-soft)}
+section:last-of-type{border-bottom:0}
+.secno{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+h2{font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,26px); line-height:1.35; margin:0 0 10px; text-wrap:balance}
+h3{font-size:16px; font-weight:600; margin:24px 0 8px}
+h4{font-size:14px; font-weight:600; margin:16px 0 6px; color:var(--ink-2)}
+p{margin:0 0 12px; max-width:70ch}
+.lede{font-size:16px; color:var(--ink-2); max-width:66ch}
+a{color:var(--acc)}
+code,.m{font-family:var(--mono); font-size:.87em}
+.gtg{font-family:var(--mono); font-size:.86em; color:var(--acc); white-space:nowrap}
+.pg{font-family:var(--mono); font-size:.8em; color:var(--muted); white-space:nowrap}
+ul.l{margin:6px 0 12px; padding-left:19px; max-width:70ch}
+ul.l li{margin-bottom:6px; color:var(--ink-2)}
+ul.l li b{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- tables ---- */
+.ts{overflow-x:auto; margin:14px 0 8px; border:1px solid var(--line); border-radius:2px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+table.w{min-width:760px}
+caption{text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); padding:11px 14px 2px}
+th,td{padding:9px 13px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line-soft); line-height:1.6}
+thead th{background:var(--surface-2); font-weight:600; font-size:12.5px; border-bottom:1px solid var(--line); white-space:nowrap}
+thead th.cur{color:var(--acc)}
+tbody th{font-weight:600; font-size:12.5px; color:var(--ink-2); background:var(--surface-2); min-width:120px}
+tbody tr:last-child th, tbody tr:last-child td{border-bottom:0}
+td.na{color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+
+/* ---- chips ---- */
+.chip{display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; padding:1px 6px; border-radius:2px; vertical-align:1px; white-space:nowrap}
+.chip.up{color:var(--signal); background:var(--signal-soft)}
+.chip.new{color:var(--signal); background:var(--signal-soft)}
+.chip.same{color:var(--muted); background:var(--surface-2); border:1px solid var(--line-soft)}
+.chip.ok{color:var(--good); background:var(--good-soft)}
+.chip.s{color:var(--acc); background:var(--acc-soft)}
+
+/* ---- cards / cases ---- */
+.cases{display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line); border-radius:2px; margin:14px 0}
+.case{background:var(--surface); padding:14px 16px}
+.case-h{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:5px}
+.case-h .t{font-weight:600; font-size:14.5px}
+.case p{margin:0 0 6px; font-size:13.8px; color:var(--ink-2); max-width:none}
+.case p:last-child{margin-bottom:0}
+.case dl{margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:3px 12px; font-size:12.8px}
+.case dt{font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:2px; white-space:nowrap}
+.case dd{margin:0; color:var(--ink-2)}
+
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; margin:14px 0}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:16px 18px}
+.panel h3{margin-top:0}
+.panel p{font-size:14px; color:var(--ink-2)}
+
+.facts{display:grid; grid-template-columns:auto 1fr; gap:6px 16px; margin:12px 0; font-size:14px; max-width:780px}
+.facts dt{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding-top:3px; white-space:nowrap}
+.facts dd{margin:0; color:var(--ink-2)}
+
+/* ---- annotation & quotes ---- */
+.anno{background:var(--acc-soft); border-left:3px solid var(--acc); border-radius:2px; padding:14px 18px; margin:16px 0 0}
+.anno .lbl{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+.anno p,.anno li{font-size:14px; color:var(--ink-2)}
+.anno p:last-child{margin-bottom:0}
+.anno ul{margin:4px 0 0; padding-left:19px}
+.anno li{margin-bottom:5px}
+.quotes{margin:12px 0; padding:0; list-style:none; max-width:74ch}
+.quotes li{border-left:2px solid var(--line); padding:2px 0 2px 14px; margin-bottom:10px; font-size:14px; color:var(--ink-2)}
+.quotes q{font-style:italic; color:var(--ink)}
+
+/* ---- series cards on hub ---- */
+.series{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; margin:18px 0}
+.scard{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--sc); border-radius:2px; padding:18px 20px}
+.scard.sa{--sc:var(--a)} .scard.sb{--sc:var(--b)}
+.scard h3{font-family:var(--serif); font-size:20px; margin:2px 0 6px}
+.scard .tag{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--sc)}
+.scard p{font-size:14px; color:var(--ink-2)}
+.eds{list-style:none; margin:12px 0 0; padding:0; border-top:1px solid var(--line-soft)}
+.eds li{display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:14px}
+.eds li .d{font-family:var(--mono); font-size:12px; color:var(--muted); min-width:84px}
+.eds a{text-decoration:none; color:var(--ink)}
+.eds a:hover{color:var(--sc)}
+.cta{display:inline-block; margin-top:14px; font-size:13.5px; font-weight:600; color:var(--sc); text-decoration:none; border:1px solid var(--sc); padding:6px 12px; border-radius:2px}
+.cta:hover{background:var(--sc); color:var(--surface)}
+
+/* ---- prev/next ---- */
+.pn{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-block:18px; border-top:1px solid var(--line)}
+.pn a{font-size:13.5px; text-decoration:none; color:var(--acc)}
+.pn .lab{display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); letter-spacing:.08em}
+
+/* ---- figure ---- */
+.fig{margin:16px 0 6px; background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:12px}
+.fig svg{display:block; width:100%; height:auto}
+.figcap{font-size:12.5px; color:var(--muted); margin:8px 0 0; max-width:74ch}
+.sv-grid{stroke:var(--line-soft); stroke-width:1}
+.sv-axis{stroke:var(--ink-2); stroke-width:1.2}
+.sv-bar{fill:var(--acc)}
+.sv-bar2{fill:var(--signal)}
+.sv-t{fill:var(--ink); font-family:"IBM Plex Sans KR",sans-serif; font-size:12px; font-weight:600}
+.sv-s{fill:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:10.5px}
+
+footer{padding-block:26px 44px; color:var(--muted); font-size:12.5px}
+footer p{max-width:74ch}
+
+@media (max-width:640px){
+  body{font-size:15px}
+  .topbar{position:static}
+  html{scroll-padding-top:12px}
+  .mast{padding-block:28px 22px}
+  .serieslinks{margin-left:0}
+  .facts{grid-template-columns:1fr; gap:0 0}
+  .facts dt{padding-top:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+</style>
+</head>
+<body data-series="A">
+<header class="topbar"><div class="wrap">
+<div class="tb1">
+<a class="home" href="../index.html">Anthropic 안전 보고서 아카이브</a>
+<nav class="serieslinks" aria-label="보고서 시리즈"><a class="sa on" href="../misuse/compare.html">오용 위협보고서</a><a class="sb" href="../risk/compare.html">RSP Risk Report</a></nav>
+</div>
+<nav class="tb2" aria-label="판본"><a href="../misuse/compare.html">누적 비교</a><a href="../misuse/2025-03.html">2025.03</a><a href="../misuse/2025-08.html">2025.08</a><a href="../misuse/2025-11.html">2025.11</a><a class="cur" aria-current="page" href="../misuse/2026-02.html">2026.02 증류</a><a href="../misuse/2026-09.html">2026.09</a></nav>
+</div></header>
+<main class="wrap">
+<div class="mast">
+  <p class="kicker">Series A · 연계 공개 · 2026.02.23 공개</p>
+  <h1>Detecting and preventing distillation attacks</h1>
+  <p class="standfirst">
+    위협보고서 형식은 아니지만 2026년 9월 판이 "2월의 첫 공개"로 이어받는 게시물이다. DeepSeek, Moonshot, MiniMax 세 곳이
+    약 24,000개의 부정 계정으로 Claude와 1,600만 건 넘게 교환하며 역량을 추출했다고 밝혔다.
+  </p>
+  <p class="meta"><span><b>형식</b> 게시 페이지만 (PDF 없음, 쪽수 없음)</span><span><b>귀속</b> 3곳 모두 고신뢰</span></p>
+</div>
+<nav class="toc" aria-label="이 페이지 목차">
+  <a href="#s01"><span>01</span>서지</a><a href="#s02"><span>02</span>위해 영역</a><a href="#s03"><span>03</span>추세</a><a href="#s04"><span>04</span>사례</a><a href="#s05"><span>05</span>AI 관여</a><a href="#s06"><span>06</span>안전장치</a><a href="#s07"><span>07</span>대응</a><a href="#s08"><span>08</span>권고</a><a href="#s09"><span>09</span>인용</a><a href="#s10"><span>10</span>주석</a>
+</nav>
+
+<section id="s01">
+  <span class="secno">01 · 서지 정보</span>
+  <h2>문서 구성</h2>
+  <dl class="facts">
+    <dt>제목</dt><dd>Detecting and preventing distillation attacks</dd>
+    <dt>공개일</dt><dd>2026년 2월 23일</dd>
+    <dt>형식</dt><dd>게시 페이지. 관측 기간은 밝히지 않음</dd>
+    <dt>시리즈 편입 근거</dt><dd>2026년 9월 판 증류 섹션이 "2월에 첫 공개를 한 이후" 추가 공격을 적발했다고 서술</dd>
+  </dl>
+</section>
+
+<section id="s02">
+  <span class="secno">02 · 다룬 위해 영역</span>
+  <h2>불법 증류 단일 영역</h2>
+  <p>외국 AI 연구소의 무단 역량 추출, 부정 계정과 프록시 재판매, 지역 접근 제한 회피. 안전장치가 제거된 모델의 확산, 수출통제 무력화, 군사·정보·감시 목적 전용이라는 국가안보 관점이 함께 제시된다.</p>
+</section>
+
+<section id="s03">
+  <span class="secno">03 · 보고서가 제시한 추세</span>
+  <h2>좁아지는 대응 시간</h2>
+  <ul class="l">
+    <li>증류 캠페인의 강도와 정교함이 커지고 있으며, 대응할 수 있는 시간이 짧고 위협은 한 기업이나 지역을 넘어선다.</li>
+    <li>불법 증류된 모델에는 필요한 안전장치가 없어 상당한 국가안보 위험을 낳고, 오픈소스로 공개되면 위험이 배가된다.</li>
+    <li>증류 공격은 수출통제를 무력화하며, 해당 연구소들의 빠른 발전이 미국 모델에서 추출한 역량에 상당 부분 의존한다는 점은 수출통제의 근거를 강화한다.</li>
+    <li>모든 캠페인이 Claude의 가장 차별화된 역량인 에이전틱 추론, 도구 사용, 코딩을 겨냥했다.</li>
+  </ul>
+</section>
+
+<section id="s04">
+  <span class="secno">04 · 사례별 요약</span>
+  <h2>3개 연구소</h2>
+  <div class="ts"><table class="w">
+    <caption>연구소별 규모와 표적</caption>
+    <thead><tr><th scope="col">연구소</th><th scope="col">교환 규모</th><th scope="col">표적 역량</th><th scope="col">기법·귀속 근거</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">DeepSeek</th><td class="n">15만 건 초과</td><td>다양한 작업의 추론, 채점표 기반 평가(강화학습 보상모델 역할), 정책 민감 질의에 대한 검열 회피형 대안</td><td>계정 간 트래픽·결제수단·시점 동기화("부하 분산"). 완성된 응답의 내부 추론을 단계별로 설명하게 해 사고사슬 학습 데이터 생성. 요청 메타데이터로 특정 연구자까지 추적</td></tr>
+      <tr><th scope="row">Moonshot AI</th><td class="n">340만 건 초과</td><td>에이전틱 추론과 도구 사용, 코딩·데이터 분석, 컴퓨터 사용 에이전트, 컴퓨터 비전</td><td>여러 접근 경로에 걸친 수백 개 부정 계정. 후기에는 추론 궤적 재구성 시도. 메타데이터가 고위 직원 공개 프로필과 일치</td></tr>
+      <tr><th scope="row">MiniMax</th><td class="n">1,300만 건 초과</td><td>에이전틱 코딩, 도구 사용과 오케스트레이션</td><td>공개 제품 로드맵과 시점 대조. 학습 중인 모델 출시 전 활동 중에 탐지. 새 Claude 모델 출시 후 <b>24시간 안에</b> 트래픽의 절반 가까이를 새 모델로 전환</td></tr>
+    </tbody>
+  </table></div>
+  <p>
+    세 곳 합계 1,600만 건 초과, 부정 계정 약 24,000개. 귀속은 IP 주소 상관관계, 요청 메타데이터, 인프라 지표, 일부 업계 파트너의 확인에 근거한 "높은 신뢰도"다.
+    Anthropic은 중국과 그 기업의 해외 자회사에 상업 접근을 제공하지 않으며, 연구소들은 Anthropic API와 제3자 클라우드에 걸친 "히드라 클러스터" 구조의 상용 프록시를 이용했다.
+    한 프록시 네트워크는 <b>2만 개 넘는 부정 계정</b>을 동시에 관리하며 증류 트래픽을 일반 고객 요청과 섞었다.
+  </p>
+</section>
+
+<section id="s05">
+  <span class="secno">05 · AI 관여 수준</span>
+  <h2>모델이 곧 추출 대상</h2>
+  <p>
+    다른 판본과 달리 Claude가 공격 도구가 아니라 <b>추출 대상</b>이다. DeepSeek 사례에서는 Claude가 채점표에 따라 답을 평가하는 강화학습 보상모델 역할까지 수행했다.
+    증류의 전형적 징후로 "소수 영역에 집중된 막대한 물량, 반복적 구조, 모델 학습에 가장 가치 있는 내용과 직접 대응되는 콘텐츠"를 들었다.
+  </p>
+</section>
+
+<section id="s06">
+  <span class="secno">06 · 안전장치 성과와 실패</span>
+  <h2>탐지는 했으나 대규모 접근은 허용됨</h2>
+  <p>
+    MiniMax 캠페인은 학습 중인 모델이 출시되기 전, 활동 중에 탐지했다. 반면 교육 계정, 보안 연구 프로그램, 스타트업 조직이 가장 많이 악용된 경로였다고 밝혀,
+    이 경로의 검증이 약했음을 인정했다. 거부 여부에 관한 서술은 없다.
+  </p>
+</section>
+
+<section id="s07">
+  <span class="secno">07 · 탐지 방법과 대응 조치</span>
+  <h2>네 갈래 대응</h2>
+  <ul class="l">
+    <li><b>탐지</b> — 사고사슬 유도 탐지, 다수 계정의 조율된 활동 탐지를 포함한 여러 분류기와 행동 지문 시스템</li>
+    <li><b>정보 공유</b> — 다른 AI 연구소, 클라우드 사업자, 관계 당국과 기술 지표 공유</li>
+    <li><b>접근 통제</b> — 교육 계정·보안 연구 프로그램·스타트업 조직의 검증 강화</li>
+    <li><b>대응 장치</b> — 정당한 고객 경험을 해치지 않으면서 증류 효용을 낮추는 제품·API·모델 수준 안전장치</li>
+  </ul>
+</section>
+
+<section id="s08">
+  <span class="secno">08 · 권고와 요청</span>
+  <h2>업계·정책의 공동 대응</h2>
+  <p>이 규모의 증류 공격은 한 기업이 해결할 수 없으며, AI 업계·클라우드 사업자·정책 결정자의 신속한 공동 대응이 필요하다고 밝혔다. 수출통제에 대한 지지도 재확인했다.</p>
+</section>
+
+<section id="s09">
+  <span class="secno">09 · 주요 인용</span>
+  <h2>원문 표현</h2>
+  <ul class="quotes">
+    <li><q>These labs generated over 16 million exchanges with Claude through approximately 24,000 fraudulent accounts</q></li>
+    <li><q>Illicitly distilled models lack necessary safeguards, creating significant national security risks.</q></li>
+    <li><q>Distillation is a widely used and legitimate training method.</q></li>
+    <li><q>a single proxy network managed more than 20,000 fraudulent accounts simultaneously</q></li>
+    <li><q>they pivoted within 24 hours, redirecting nearly half their traffic to capture capabilities from our latest system.</q></li>
+  </ul>
+</section>
+
+<section id="s10">
+  <span class="secno">10 · 요약자 주석</span>
+  <h2>이 판본의 위치</h2>
+  <div class="anno">
+    <span class="lbl">요약자 주석</span>
+    <ul>
+      <li>증류를 지식재산이 아니라 <b>안전장치 유실과 수출통제 무력화</b>의 문제로 프레이밍했다. 9월 판은 여기에 "이용자 데이터의 무단 중계"라는 개인정보 쟁점을 더한다.</li>
+      <li>연구소 실명을 특정한 첫 공개다. 2월에는 3곳, 9월에는 7곳으로 늘었고 Moonshot의 규모는 340만 건에서 2,300만 건 초과(5–7월)로 커졌다. 두 수치는 관측 기간이 달라 직접 합산·비교할 수 없다.</li>
+      <li>"정당한 학습 기법"과 "불법 증류"를 가르는 기준이 규모·은밀성·무단성(부정 계정)으로 제시되었다. 약관 위반 외에 어떤 법적 근거로 규율할지는 여전히 열려 있다.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+<nav class="pn wrap" aria-label="판본 이동"><a href="../misuse/2025-11.html"><span class="lab">이전 판본</span>오용 위협보고서 2025.11</a><a href="../misuse/compare.html"><span class="lab">시리즈</span>누적 비교로 이동</a><a href="../misuse/2026-09.html" style="text-align:right"><span class="lab">다음 판본</span>오용 위협보고서 2026.09</a></nav>
+<footer class="wrap"><p>국문 요약 · 최종 갱신 2026.09.16. 표의 수치와 사실관계는 각 보고서 원문(PDF 또는 공식 게시 페이지)에서 확인했고, 괄호 안 <span class="pg">p.</span> 표기는 원문 쪽수다. "요약자 주석"으로 표시한 부분은 Anthropic의 서술이 아니라 요약자의 검토 의견이다.</p></footer>
+</body>
+</html>

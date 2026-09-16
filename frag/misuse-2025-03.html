@@ -1,0 +1,156 @@
+<div class="mast">
+  <p class="kicker">Series A · 판본 1 · 2025.04.23 공개</p>
+  <h1>Detecting and countering malicious uses of Claude: March 2025</h1>
+  <p class="standfirst">
+    위협 인텔리전스 계열의 첫 공개. 여러 고객을 위해 100개 넘는 소셜미디어 페르소나를 운용한 "영향력 공작 서비스"를 중심으로,
+    IoT 카메라 크리덴셜 수집, 채용 사기, 초보자의 멀웨어 고도화 등 4건을 다뤘다.
+  </p>
+  <p class="meta"><span><b>형식</b> 게시 페이지 + 3쪽 PDF(영향력 공작 사례만)</span><span><b>GTG 식별자</b> 사용 전</span><span><b>관측 기간</b> 명시 없음</span></p>
+</div>
+<nav class="toc" aria-label="이 페이지 목차">
+  <a href="#s01"><span>01</span>서지</a><a href="#s02"><span>02</span>위해 영역</a><a href="#s03"><span>03</span>추세</a><a href="#s04"><span>04</span>사례</a><a href="#s05"><span>05</span>AI 관여</a><a href="#s06"><span>06</span>안전장치</a><a href="#s07"><span>07</span>대응</a><a href="#s08"><span>08</span>권고</a><a href="#s09"><span>09</span>인용</a><a href="#s10"><span>10</span>주석</a>
+</nav>
+
+<section id="s01">
+  <span class="secno">01 · 서지 정보</span>
+  <h2>문서 구성</h2>
+  <dl class="facts">
+    <dt>게시 제목</dt><dd>Detecting and countering malicious uses of Claude: March 2025</dd>
+    <dt>PDF 제목</dt><dd>Operating Multi-Client Influence Networks Across Platforms (3쪽, 각 쪽 하단 "April 2025")</dd>
+    <dt>공개일</dt><dd>2025년 4월 23일 (제목의 "March 2025"는 관측 시점 표기)</dd>
+    <dt>작성자</dt><dd>Ken Lebedev, Alex Moix, Jacob Klein <span class="pg">PDF p.3</span></dd>
+    <dt>관여 모델</dt><dd>"Claude"로만 표기, 버전 미특정. 외부 이미지 생성 모델 2종이 함께 쓰임</dd>
+    <dt>유의점</dt><dd>PDF는 영향력 공작 사례만 담고, 나머지 3건은 게시 페이지에만 있어 쪽수가 없다(아래 "게시 페이지" 표기)</dd>
+  </dl>
+</section>
+
+<section id="s02">
+  <span class="secno">02 · 다룬 위해 영역</span>
+  <h2>네 개의 사례 영역</h2>
+  <ul class="l">
+    <li><b>영향력 공작</b> — 조율된 비진정 행위, "influence-as-a-service"</li>
+    <li><b>사이버</b> — 유출 크리덴셜로 IoT 보안카메라 접근 도구 구축</li>
+    <li><b>사기</b> — 동유럽 구직자 대상 채용 사기</li>
+    <li><b>사이버</b> — 코딩 능력이 낮은 행위자의 멀웨어·신상털기 도구 고도화</li>
+  </ul>
+</section>
+
+<section id="s03">
+  <span class="secno">03 · 보고서가 제시한 추세</span>
+  <h2>두 가지 교훈</h2>
+  <ul class="l">
+    <li>이용자들이 프런티어 모델로 다수의 소셜미디어 봇이 얽힌 복잡한 남용 시스템을 <b>"준자율적으로 오케스트레이션"</b>하기 시작했고, 에이전틱 AI가 발전할수록 이 경향이 이어질 것으로 예상했다. <span class="pg">게시 페이지</span></li>
+    <li>생성형 AI는 덜 숙련된 행위자의 역량 개발을 가속해, 과거 기술적으로 숙련된 사람만 가능했던 수준으로 활동하게 할 수 있다. <span class="pg">게시 페이지</span></li>
+  </ul>
+  <p>
+    PDF는 영향력 공작이 <b>콘텐츠 중심에서 관계 중심으로</b> 옮겨가고 있으며, 바이럴 순간을 재는 기존 Breakout Scale에 더해
+    관계 형성과 공동체 편입을 평가하는 새 틀이 필요하다고 적었다. <span class="pg">PDF p.3</span>
+  </p>
+</section>
+
+<section id="s04">
+  <span class="secno">04 · 사례별 요약</span>
+  <h2>4건</h2>
+  <div class="cases">
+    <div class="case">
+      <div class="case-h"><span class="t">다중 고객 영향력 네트워크 운영</span><span class="chip s">영향력</span></div>
+      <p>
+        금전 동기의 "영향력 공작 서비스" 사업자가 X와 Facebook에서 100개 넘는 페르소나를 운용하며 수만 개의 실제 계정과 교류했다.
+        같은 인프라로 최소 4개 고객 캠페인을 돌렸다(유럽 청중 대상 에너지 안보 서사, 이란 청중 대상 문화 정체성 서사,
+        EU 규제를 비판하며 UAE를 기업 환경으로 홍보, 유럽 한 국가의 알바니아계 인사 지지, 케냐 개발 사업과 정치인 홍보).
+        Anthropic은 국가 연계 캠페인에서 예상되는 서사와 일치하지만 <b>어느 국가에도 귀속을 확인하지 않았다</b>고 밝혔다. <span class="pg">PDF pp.1–2</span>
+      </p>
+      <dl>
+        <dt>Claude 역할</dt><dd>각 페르소나가 특정 게시물에 좋아요·공유·댓글·무시 중 무엇을 할지 고객의 정치 목표에 따라 결정, 페르소나별 정치 성향 지침 유지, 모국어 응답 생성, 이미지 생성 모델용 프롬프트 작성과 결과 평가. JSON 기반 페르소나 관리</dd>
+        <dt>도달</dt><dd>Breakout Scale 1단계, 바이럴 콘텐츠 없음. 대신 장기적 관계 유지에 집중 <span class="pg">PDF p.3</span></dd>
+      </dl>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">IoT 보안카메라 유출 크리덴셜 수집</span><span class="chip s">사이버</span></div>
+      <p>
+        상용 유출 데이터 플랫폼과 인포스틸러 로그 텔레그램 커뮤니티를 결합한 숙련 행위자가 오픈소스 스크래핑 도구 재작성,
+        표적 URL 수집 스크립트, 스틸러 로그 게시물 처리 시스템, 검색 기능 개선에 Claude를 썼다.
+        개별 기법은 이중용도지만 전체 맥락상 무단 접근 목적이었다. 실제 배포 성공은 확인되지 않았다. <span class="pg">게시 페이지</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">채용 사기의 실시간 문장 세탁</span><span class="chip s">사기</span></div>
+      <p>
+        정당한 기업의 채용 담당자를 사칭해 동유럽 구직자를 노린 사기범들이 서툰 비원어민 영어를 "원어민이 쓴 것처럼" 고쳐 달라고 요청하고,
+        채용 서사·면접 질문·메시지 서식을 다듬었다. 성공한 사기 사례는 확인되지 않았다. <span class="pg">게시 페이지</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="case-h"><span class="t">초보 행위자의 멀웨어 개발</span><span class="chip s">사이버</span></div>
+      <p>
+        정규 코딩 능력이 거의 없는 행위자의 도구가 기본 기능에서 얼굴 인식과 다크웹 검색을 갖춘 고급 도구 모음으로,
+        단순 배치 스크립트 생성기에서 탐지 회피형 악성 페이로드를 만드는 GUI 빌더로 발전했다.
+        실제 배포는 확인되지 않았다. <span class="pg">게시 페이지</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="s05">
+  <span class="secno">05 · AI 관여 수준</span>
+  <h2>준자율 오케스트레이션</h2>
+  <p>
+    영향력 공작 사례에서 Claude는 봇 계정의 행동을 결정하는 "오케스트레이터"로 쓰였고, PDF는 "AI가 교류에 관한 전략적·전술적 결정을 모두 내린다"고 표현했다. <span class="pg">PDF pp.1, 3</span>
+    나머지 3건은 코드·문장 작성을 돕는 보조적 사용이었다. 작업 비중 같은 수치는 제시되지 않았다.
+  </p>
+</section>
+
+<section id="s06">
+  <span class="secno">06 · 안전장치 성과와 실패</span>
+  <h2>거부·우회에 관한 서술 없음</h2>
+  <p>
+    네 사례 모두 모델이 요청을 거부했는지, 어떤 방식으로 우회되었는지에 대한 서술이 없다.
+    영향력 공작 봇에는 "봇이냐"는 질문에 유머와 비꼼으로 답하고, 시나 레시피를 요구해 캐릭터를 깨려는 시도를 버티라는 지시가 들어 있었다. <span class="pg">PDF p.2</span>
+    나머지 3건은 모두 "실제 성공이나 배포를 확인하지 못했다"고 적었다.
+  </p>
+</section>
+
+<section id="s07">
+  <span class="secno">07 · 탐지 방법과 대응 조치</span>
+  <h2>Clio와 계층적 요약</h2>
+  <ul class="l">
+    <li>위협 인텔리전스 프로그램을 표준 대규모 탐지가 놓친 위해를 잡는 "안전망"으로 규정 <span class="pg">게시 페이지</span></li>
+    <li>자사 공개 연구인 <b>Clio</b>와 <b>계층적 요약</b>으로 대량 대화 데이터에서 오용 패턴을 식별</li>
+    <li>입력과 응답을 평가하는 분류기 운용</li>
+    <li>네 사례 모두 관련 계정을 차단하고, 결과를 전반적 통제 체계에 반영</li>
+  </ul>
+</section>
+
+<section id="s08">
+  <span class="secno">08 · 권고와 요청</span>
+  <h2>평가 틀의 확장</h2>
+  <ul class="l">
+    <li>관계 형성과 공동체 편입을 중심으로 한 영향력 공작 평가 틀이 기존 Breakout Scale과 함께 필요 <span class="pg">PDF p.3</span></li>
+    <li>보안·안전 공동체와의 긴밀한 협력, 업계·정부·연구계의 공동 방어 강화 <span class="pg">게시 페이지</span></li>
+  </ul>
+</section>
+
+<section id="s09">
+  <span class="secno">09 · 주요 인용</span>
+  <h2>원문 표현</h2>
+  <ul class="quotes">
+    <li><q>Claude was used as an orchestrator deciding what actions social media bot accounts should take based on politically motivated personas.</q> <span class="pg">게시 페이지</span></li>
+    <li><q>Persistence over virality</q> <span class="pg">PDF p.3</span></li>
+    <li><q>This reflects a shift from content-centric to relationship-centric influence operations</q> <span class="pg">PDF p.3</span></li>
+    <li><q>AI can potentially flatten the learning curve for malicious actors</q> <span class="pg">게시 페이지</span></li>
+    <li><q>We have not confirmed attribution of these campaigns to any nation state.</q> <span class="pg">PDF p.2</span></li>
+  </ul>
+</section>
+
+<section id="s10">
+  <span class="secno">10 · 요약자 주석</span>
+  <h2>이 판본의 위치</h2>
+  <div class="anno">
+    <span class="lbl">요약자 주석</span>
+    <ul>
+      <li>시리즈의 출발점으로서 형식이 가장 가볍다. 네 사례 중 세 건이 "실제 피해 미확인"으로 끝나, 이후 판본과 비교할 때 <b>피해 확인 수준</b>이 중요한 비교축이 된다.</li>
+      <li>영향력 공작을 "콘텐츠"가 아닌 "관계" 단위로 봐야 한다는 문제 제기는, 게시물 단위 허위정보 규율(삭제·표시 의무)이 이런 유형에 잘 맞지 않는다는 뜻으로 읽힌다.</li>
+      <li>귀속을 확인하지 않았다고 명시한 점은 2025년 11월 판(고신뢰 국가 귀속), 2026년 9월 판(기업·기관 실명 특정)과 대비된다.</li>
+    </ul>
+  </div>
+</section>

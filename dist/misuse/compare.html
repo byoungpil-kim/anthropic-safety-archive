@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>오용 위협보고서 누적 비교</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#eef0f3; --surface:#ffffff; --surface-2:#f5f6f8;
+  --ink:#161a1f; --ink-2:#3a424e; --muted:#646d7b;
+  --line:#d2d7de; --line-soft:#e3e7ec;
+  --a:#1d4e6f; --a-soft:#e1ebf1;
+  --b:#4a3f7a; --b-soft:#e9e6f3;
+  --signal:#9e3f2a; --signal-soft:#f6e6e1;
+  --good:#2f6b4f; --good-soft:#e2efe8;
+  --serif:"Noto Serif KR",Batang,"AppleMyungjo",serif;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+    --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+    --line:#2f3741; --line-soft:#272e37;
+    --a:#7fb6d6; --a-soft:#1b2b37;
+    --b:#aea4e6; --b-soft:#26223a;
+    --signal:#e0917a; --signal-soft:#34241f;
+    --good:#86c2a2; --good-soft:#1d2d25;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+  --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+  --line:#2f3741; --line-soft:#272e37;
+  --a:#7fb6d6; --a-soft:#1b2b37;
+  --b:#aea4e6; --b-soft:#26223a;
+  --signal:#e0917a; --signal-soft:#34241f;
+  --good:#86c2a2; --good-soft:#1d2d25;
+}
+/* 시리즈 강조색: body[data-series] 로 전환 */
+body{--acc:var(--ink-2); --acc-soft:var(--surface-2)}
+body[data-series="A"]{--acc:var(--a); --acc-soft:var(--a-soft)}
+body[data-series="B"]{--acc:var(--b); --acc-soft:var(--b-soft)}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.72;
+  -webkit-text-size-adjust:100%; word-break:keep-all; overflow-wrap:break-word;
+}
+.wrap{max-width:1120px; margin:0 auto; padding-inline:20px}
+
+/* ---- top bar ---- */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.tb1{display:flex; align-items:center; gap:14px; min-height:46px; flex-wrap:wrap}
+.home{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); text-decoration:none; white-space:nowrap}
+.home:hover{color:var(--acc)}
+.serieslinks{display:flex; gap:4px; margin-left:auto; flex-wrap:wrap}
+.serieslinks a{font-size:12.5px; text-decoration:none; color:var(--ink-2); padding:3px 9px; border-radius:2px; border:1px solid transparent}
+.serieslinks a.on{border-color:var(--line); background:var(--surface)}
+.serieslinks a.sa{color:var(--a)} .serieslinks a.sb{color:var(--b)}
+.tb2{display:flex; gap:2px; flex-wrap:wrap; padding-bottom:8px}
+.tb2 a{font-family:var(--mono); font-size:12px; color:var(--ink-2); text-decoration:none; padding:3px 8px; border-radius:2px}
+.tb2 a:hover{background:var(--acc-soft); color:var(--acc)}
+.tb2 a.cur{background:var(--acc); color:var(--surface)}
+a:focus-visible{outline:2px solid var(--acc); outline-offset:2px}
+
+/* ---- masthead ---- */
+.mast{padding-block:40px 26px; border-bottom:2px solid var(--ink)}
+.kicker{font-family:var(--mono); font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--acc); margin:0 0 12px}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(27px,5vw,42px); line-height:1.25; margin:0 0 14px; letter-spacing:-.01em; text-wrap:balance}
+.standfirst{font-size:16.5px; color:var(--ink-2); max-width:64ch; margin:0 0 18px}
+.meta{display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12px; color:var(--muted); margin:0}
+.meta b{font-weight:500; color:var(--ink-2)}
+
+/* ---- local toc ---- */
+.toc{display:flex; flex-wrap:wrap; gap:4px 14px; padding-block:14px; border-bottom:1px solid var(--line-soft); font-size:13px}
+.toc a{color:var(--ink-2); text-decoration:none}
+.toc a:hover{color:var(--acc)}
+.toc span{font-family:var(--mono); font-size:11px; color:var(--muted); margin-right:4px}
+
+/* ---- sections ---- */
+section{padding-block:32px; border-bottom:1px solid var(--line-soft)}
+section:last-of-type{border-bottom:0}
+.secno{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+h2{font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,26px); line-height:1.35; margin:0 0 10px; text-wrap:balance}
+h3{font-size:16px; font-weight:600; margin:24px 0 8px}
+h4{font-size:14px; font-weight:600; margin:16px 0 6px; color:var(--ink-2)}
+p{margin:0 0 12px; max-width:70ch}
+.lede{font-size:16px; color:var(--ink-2); max-width:66ch}
+a{color:var(--acc)}
+code,.m{font-family:var(--mono); font-size:.87em}
+.gtg{font-family:var(--mono); font-size:.86em; color:var(--acc); white-space:nowrap}
+.pg{font-family:var(--mono); font-size:.8em; color:var(--muted); white-space:nowrap}
+ul.l{margin:6px 0 12px; padding-left:19px; max-width:70ch}
+ul.l li{margin-bottom:6px; color:var(--ink-2)}
+ul.l li b{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- tables ---- */
+.ts{overflow-x:auto; margin:14px 0 8px; border:1px solid var(--line); border-radius:2px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+table.w{min-width:760px}
+caption{text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); padding:11px 14px 2px}
+th,td{padding:9px 13px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line-soft); line-height:1.6}
+thead th{background:var(--surface-2); font-weight:600; font-size:12.5px; border-bottom:1px solid var(--line); white-space:nowrap}
+thead th.cur{color:var(--acc)}
+tbody th{font-weight:600; font-size:12.5px; color:var(--ink-2); background:var(--surface-2); min-width:120px}
+tbody tr:last-child th, tbody tr:last-child td{border-bottom:0}
+td.na{color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+
+/* ---- chips ---- */
+.chip{display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; padding:1px 6px; border-radius:2px; vertical-align:1px; white-space:nowrap}
+.chip.up{color:var(--signal); background:var(--signal-soft)}
+.chip.new{color:var(--signal); background:var(--signal-soft)}
+.chip.same{color:var(--muted); background:var(--surface-2); border:1px solid var(--line-soft)}
+.chip.ok{color:var(--good); background:var(--good-soft)}
+.chip.s{color:var(--acc); background:var(--acc-soft)}
+
+/* ---- cards / cases ---- */
+.cases{display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line); border-radius:2px; margin:14px 0}
+.case{background:var(--surface); padding:14px 16px}
+.case-h{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:5px}
+.case-h .t{font-weight:600; font-size:14.5px}
+.case p{margin:0 0 6px; font-size:13.8px; color:var(--ink-2); max-width:none}
+.case p:last-child{margin-bottom:0}
+.case dl{margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:3px 12px; font-size:12.8px}
+.case dt{font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:2px; white-space:nowrap}
+.case dd{margin:0; color:var(--ink-2)}
+
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; margin:14px 0}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:16px 18px}
+.panel h3{margin-top:0}
+.panel p{font-size:14px; color:var(--ink-2)}
+
+.facts{display:grid; grid-template-columns:auto 1fr; gap:6px 16px; margin:12px 0; font-size:14px; max-width:780px}
+.facts dt{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding-top:3px; white-space:nowrap}
+.facts dd{margin:0; color:var(--ink-2)}
+
+/* ---- annotation & quotes ---- */
+.anno{background:var(--acc-soft); border-left:3px solid var(--acc); border-radius:2px; padding:14px 18px; margin:16px 0 0}
+.anno .lbl{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+.anno p,.anno li{font-size:14px; color:var(--ink-2)}
+.anno p:last-child{margin-bottom:0}
+.anno ul{margin:4px 0 0; padding-left:19px}
+.anno li{margin-bottom:5px}
+.quotes{margin:12px 0; padding:0; list-style:none; max-width:74ch}
+.quotes li{border-left:2px solid var(--line); padding:2px 0 2px 14px; margin-bottom:10px; font-size:14px; color:var(--ink-2)}
+.quotes q{font-style:italic; color:var(--ink)}
+
+/* ---- series cards on hub ---- */
+.series{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; margin:18px 0}
+.scard{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--sc); border-radius:2px; padding:18px 20px}
+.scard.sa{--sc:var(--a)} .scard.sb{--sc:var(--b)}
+.scard h3{font-family:var(--serif); font-size:20px; margin:2px 0 6px}
+.scard .tag{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--sc)}
+.scard p{font-size:14px; color:var(--ink-2)}
+.eds{list-style:none; margin:12px 0 0; padding:0; border-top:1px solid var(--line-soft)}
+.eds li{display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:14px}
+.eds li .d{font-family:var(--mono); font-size:12px; color:var(--muted); min-width:84px}
+.eds a{text-decoration:none; color:var(--ink)}
+.eds a:hover{color:var(--sc)}
+.cta{display:inline-block; margin-top:14px; font-size:13.5px; font-weight:600; color:var(--sc); text-decoration:none; border:1px solid var(--sc); padding:6px 12px; border-radius:2px}
+.cta:hover{background:var(--sc); color:var(--surface)}
+
+/* ---- prev/next ---- */
+.pn{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-block:18px; border-top:1px solid var(--line)}
+.pn a{font-size:13.5px; text-decoration:none; color:var(--acc)}
+.pn .lab{display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); letter-spacing:.08em}
+
+/* ---- figure ---- */
+.fig{margin:16px 0 6px; background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:12px}
+.fig svg{display:block; width:100%; height:auto}
+.figcap{font-size:12.5px; color:var(--muted); margin:8px 0 0; max-width:74ch}
+.sv-grid{stroke:var(--line-soft); stroke-width:1}
+.sv-axis{stroke:var(--ink-2); stroke-width:1.2}
+.sv-bar{fill:var(--acc)}
+.sv-bar2{fill:var(--signal)}
+.sv-t{fill:var(--ink); font-family:"IBM Plex Sans KR",sans-serif; font-size:12px; font-weight:600}
+.sv-s{fill:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:10.5px}
+
+footer{padding-block:26px 44px; color:var(--muted); font-size:12.5px}
+footer p{max-width:74ch}
+
+@media (max-width:640px){
+  body{font-size:15px}
+  .topbar{position:static}
+  html{scroll-padding-top:12px}
+  .mast{padding-block:28px 22px}
+  .serieslinks{margin-left:0}
+  .facts{grid-template-columns:1fr; gap:0 0}
+  .facts dt{padding-top:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+</style>
+</head>
+<body data-series="A">
+<header class="topbar"><div class="wrap">
+<div class="tb1">
+<a class="home" href="../index.html">Anthropic 안전 보고서 아카이브</a>
+<nav class="serieslinks" aria-label="보고서 시리즈"><a class="sa on" href="../misuse/compare.html">오용 위협보고서</a><a class="sb" href="../risk/compare.html">RSP Risk Report</a></nav>
+</div>
+<nav class="tb2" aria-label="판본"><a class="cur" aria-current="page" href="../misuse/compare.html">누적 비교</a><a href="../misuse/2025-03.html">2025.03</a><a href="../misuse/2025-08.html">2025.08</a><a href="../misuse/2025-11.html">2025.11</a><a href="../misuse/2026-02.html">2026.02 증류</a><a href="../misuse/2026-09.html">2026.09</a></nav>
+</div></header>
+<main class="wrap">
+<div class="mast">
+  <p class="kicker">Series A · 누적 비교 · 5개 판본</p>
+  <h1>오용 위협보고서 누적 비교</h1>
+  <p class="standfirst">
+    2025년 4월부터 2026년 9월까지의 다섯 차례 공개를 판본 요약과 같은 번호의 항목으로 나란히 놓았다.
+    새 판본이 나오면 각 표의 오른쪽에 열을 더하고 표 아래 "변화 해설"을 고친다.
+  </p>
+  <p class="meta"><span><b>수록</b> 2025.03 · 2025.08 · 2025.11 · 2026.02(증류) · 2026.09</span><span><b>갱신</b> 2026.09.16</span></p>
+</div>
+<nav class="toc" aria-label="이 페이지 목차">
+  <a href="#c01"><span>01</span>서지</a><a href="#c02"><span>02</span>위해 영역</a><a href="#c03"><span>03</span>추세</a><a href="#c04"><span>04</span>규모·귀속</a><a href="#c05"><span>05</span>AI 관여</a><a href="#c06"><span>06</span>안전장치</a><a href="#c07"><span>07</span>대응</a><a href="#c10"><span>10</span>종합</a>
+</nav>
+
+<section id="c01">
+  <span class="secno">01 · 서지 정보</span>
+  <h2>문서 형식의 변화</h2>
+  <div class="ts"><table class="w">
+    <caption>판본 메타데이터</caption>
+    <thead><tr><th scope="col">항목</th><th scope="col"><a href="2025-03.html">2025.03</a></th><th scope="col"><a href="2025-08.html">2025.08</a></th><th scope="col"><a href="2025-11.html">2025.11</a></th><th scope="col"><a href="2026-02.html">2026.02 증류</a></th><th scope="col" class="cur"><a href="2026-09.html">2026.09</a></th></tr></thead>
+    <tbody>
+      <tr><th scope="row">공개일</th><td class="n">2025.04.23</td><td class="n">2025.08.27</td><td class="n">2025.11.13</td><td class="n">2026.02.23</td><td class="n">2026.09.10</td></tr>
+      <tr><th scope="row">형식·분량</th><td>게시 페이지 + PDF 3쪽</td><td>PDF 25쪽</td><td>PDF 14쪽</td><td>게시 페이지만</td><td>PDF 154쪽 + IOC 파일</td></tr>
+      <tr><th scope="row">관측 기간</th><td class="na">명시 없음</td><td>사례별 상이</td><td>2025.09 중순 탐지</td><td class="na">명시 없음</td><td>2025.12–2026.08</td></tr>
+      <tr><th scope="row">관여 모델</th><td>Claude</td><td>Claude, Claude Code</td><td>Claude Code + MCP</td><td>Claude</td><td>Haiku·Sonnet·Opus (Fable·Mythos는 증류 1건)</td></tr>
+      <tr><th scope="row">사례 수</th><td class="n">4</td><td class="n">10</td><td class="n">1</td><td class="n">3개 연구소</td><td class="n">37 + 증류 7개 연구소</td></tr>
+      <tr><th scope="row">GTG 식별자</th><td>미사용</td><td>일부 사용</td><td>사용</td><td>미사용</td><td>전 사례 사용 (생물학 제외)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 단일 사례 보고서(2025.11)와 단일 주제 게시물(2026.02)을 거쳐, 2026.09에는 7개 영역을 한 문서로 묶는 종합 보고서 형식이 되었다. 다만 발행 주기는 여전히 공식화되지 않았다.</p>
+</section>
+
+<section id="c02">
+  <span class="secno">02 · 다룬 위해 영역</span>
+  <h2>영역 커버리지</h2>
+  <div class="ts"><table class="w">
+    <caption>위해 영역 × 판본 (숫자는 사례 수)</caption>
+    <thead><tr><th scope="col">영역</th><th scope="col">2025.03</th><th scope="col">2025.08</th><th scope="col">2025.11</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.09</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">사이버 작전</th><td class="n">2</td><td class="n">6</td><td class="n">1</td><td class="na">—</td><td class="n">6</td></tr>
+      <tr><th scope="row">영향력 공작</th><td class="n">1</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="n">9</td></tr>
+      <tr><th scope="row">감시</th><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="n">10 <span class="chip new">신설</span></td></tr>
+      <tr><th scope="row">재래식 무기</th><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="n">6 <span class="chip new">신설</span></td></tr>
+      <tr><th scope="row">생물학 오용</th><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="n">5 <span class="chip new">신설</span></td></tr>
+      <tr><th scope="row">사기·기망</th><td class="n">1</td><td class="n">4</td><td class="na">—</td><td class="na">—</td><td class="n">1</td></tr>
+      <tr><th scope="row">불법 증류</th><td class="na">—</td><td class="na">—</td><td class="na">—</td><td class="n">3개 연구소</td><td class="n">7개 연구소</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 2025년 판본들은 사이버와 사기에 집중했고 영향력 공작은 첫 판본 이후 한동안 다루지 않았다. 2026.09에서 영향력 공작이 9건으로 돌아오고 감시·무기·생물학이 신설되었다. 공백은 해당 활동이 없었다는 뜻이 아니라 그 판본이 다루지 않았다는 뜻이다.</p>
+</section>
+
+<section id="c03">
+  <span class="secno">03 · 보고서가 제시한 추세</span>
+  <h2>핵심 명제의 이동</h2>
+  <div class="ts"><table class="w">
+    <caption>판본별 표제 명제</caption>
+    <thead><tr><th scope="col">판본</th><th scope="col">핵심 명제</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">2025.03</th><td>이용자가 프런티어 모델로 복잡한 남용 시스템을 <b>준자율적으로 오케스트레이션</b>하기 시작했다. 영향력 공작은 콘텐츠 중심에서 관계 중심으로 옮겨간다.</td></tr>
+      <tr><th scope="row">2025.08</th><td><b>에이전틱 AI가 무기화</b>되어 조언이 아니라 공격을 직접 수행한다. 행위자의 숙련도와 공격 복잡도의 관계에 대한 가정이 성립하지 않는다.</td></tr>
+      <tr><th scope="row">2025.11</th><td>대규모로 인간 개입 없이 대부분 실행된 <b>첫 사이버 공격</b>. 사이버 역량이 기술 혁신보다 범용 자원의 오케스트레이션에서 나온다.</td></tr>
+      <tr><th scope="row">2026.02</th><td>증류된 모델은 역량을 얻되 <b>안전장치는 이전되지 않는다</b>. 증류는 수출통제를 무력화한다.</td></tr>
+      <tr><th scope="row" class="cur">2026.09</th><td><b>정교한 공격에 더 이상 정교한 공격자가 필요하지 않다.</b> 2025.11의 자율 운영 모델이 모든 행위자 계층으로 확산되었고, AI가 감시 영역에서 엔지니어링 인력을 대체했다.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 명제의 초점이 "AI가 무엇을 할 수 있는가"(2025)에서 "누가 그것을 할 수 있는가"(2026)로 옮겨졌다. 2026.09는 역량의 확산과 행위자 계층의 평준화를 같은 문제로 본다.</p>
+</section>
+
+<section id="c04">
+  <span class="secno">04 · 사례 규모와 귀속</span>
+  <h2>대표 수치와 귀속 수준</h2>
+  <div class="ts"><table class="w">
+    <caption>판본별 대표 규모 지표 (관측 범위가 달라 합산·직접 비교 불가)</caption>
+    <thead><tr><th scope="col">항목</th><th scope="col">2025.03</th><th scope="col">2025.08</th><th scope="col">2025.11</th><th scope="col">2026.02</th><th scope="col" class="cur">2026.09</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">최대 표적 수</th><td>실제 계정 수만 개와 교류</td><td>최소 17개 조직</td><td>약 30개 조직</td><td class="na">—</td><td>약 50개 조직(GTG-10007), 약 2,500만 SIM(말리)</td></tr>
+      <tr><th scope="row">운용 계정·자산</th><td>페르소나 100개 초과</td><td>로맨스 봇 월 이용자 1만 명 초과</td><td class="na">—</td><td>부정 계정 약 24,000개</td><td>AI 페르소나 4,700개 초과, 위장 뉴스사이트 약 70개</td></tr>
+      <tr><th scope="row">금전·데이터</th><td class="na">—</td><td>몸값 7.5만–50만 달러, 때때로 초과</td><td class="na">—</td><td class="na">—</td><td>1TB 초과 유출, 국가신분기록 30만 건 초과</td></tr>
+      <tr><th scope="row">증류 교환량</th><td class="na">—</td><td class="na">—</td><td class="na">—</td><td>3곳 합계 1,600만 건 초과</td><td>Alibaba 1억 5,100만 건 초과(5–7월) 등</td></tr>
+    </tbody>
+  </table></div>
+  <div class="ts"><table class="w">
+    <caption>귀속 수준의 변화</caption>
+    <thead><tr><th scope="col">판본</th><th scope="col">귀속 방식</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">2025.03</th><td>행위자 유형만 기술. "어느 국가에도 귀속을 확인하지 않았다"</td></tr>
+      <tr><th scope="row">2025.08</th><td>국가(북한)·국적(영국 소재)·언어권 수준. 중국 행위자는 "중국 APT와 일치하는 특성"으로 기술</td></tr>
+      <tr><th scope="row">2025.11</th><td>"높은 신뢰도"로 중국 국가후원 그룹 귀속. 사후 개정으로 신뢰도 표현을 명확히 함</td></tr>
+      <tr><th scope="row">2026.02</th><td>연구소 실명 3곳을 높은 신뢰도로 특정</td></tr>
+      <tr><th scope="row" class="cur">2026.09</th><td>기업·기관 실명 특정 확대(연구소 7곳, 프랑스·튀르키예 기업, 이란 선전기관, 말리 국가안보국 등), 공개 보도(Midnight Blizzard) 연계, 기관별 신뢰도 병기</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 귀속 수준이 "유형"에서 "국가"를 거쳐 "기관·기업 실명"으로 올라갔다. 생물학 사례만은 연구자 보호를 이유로 기관과 국가를 공개하지 않아 방향이 반대다.</p>
+</section>
+
+<section id="c05">
+  <span class="secno">05 · AI 관여 수준</span>
+  <h2>보고된 최고 관여 단계</h2>
+  <div class="fig">
+    <svg viewBox="0 0 900 270" role="img" aria-label="판본별로 보고된 AI 관여의 최고 단계. 2025.03 준자율 오케스트레이션, 2025.08 지시형 실행, 2025.11 자율형 전술 작업 80~90퍼센트, 2026.02 해당 없음, 2026.09 예약형 무인 실행.">
+      <line x1="150" y1="30" x2="880" y2="30" class="sv-grid"/>
+      <line x1="150" y1="80" x2="880" y2="80" class="sv-grid"/>
+      <line x1="150" y1="130" x2="880" y2="130" class="sv-grid"/>
+      <line x1="150" y1="180" x2="880" y2="180" class="sv-grid"/>
+      <line x1="150" y1="230" x2="880" y2="230" class="sv-axis"/>
+      <text x="10" y="34" class="sv-s">예약형</text>
+      <text x="10" y="84" class="sv-s">자율형</text>
+      <text x="10" y="134" class="sv-s">지시형</text>
+      <text x="10" y="184" class="sv-s">대화형·준자율</text>
+      <text x="10" y="234" class="sv-s">해당 없음</text>
+      <rect x="178" y="180" width="90" height="50" class="sv-bar" opacity=".35"/>
+      <rect x="178" y="180" width="90" height="3" class="sv-bar"/>
+      <rect x="324" y="130" width="90" height="100" class="sv-bar" opacity=".35"/>
+      <rect x="324" y="130" width="90" height="3" class="sv-bar"/>
+      <rect x="470" y="80" width="90" height="150" class="sv-bar" opacity=".35"/>
+      <rect x="470" y="80" width="90" height="3" class="sv-bar"/>
+      <text x="616" y="222" class="sv-s">추출 대상</text>
+      <rect x="762" y="30" width="90" height="200" class="sv-bar2" opacity=".3"/>
+      <rect x="762" y="30" width="90" height="3" class="sv-bar2"/>
+      <text x="178" y="250" class="sv-t">2025.03</text>
+      <text x="324" y="250" class="sv-t">2025.08</text>
+      <text x="470" y="250" class="sv-t">2025.11</text>
+      <text x="616" y="250" class="sv-t">2026.02</text>
+      <text x="762" y="250" class="sv-t">2026.09</text>
+      <text x="178" y="265" class="sv-s">봇 행동 결정</text>
+      <text x="324" y="265" class="sv-s">에이전트가 직접 공격</text>
+      <text x="470" y="265" class="sv-s">전술 80–90%</text>
+      <text x="616" y="265" class="sv-s">모델이 표적</text>
+      <text x="762" y="265" class="sv-s">무인 예약 작업</text>
+    </svg>
+    <p class="figcap">그림 1. 각 판본에서 보고된 AI 관여의 최고 단계. 단계 구분은 2026.09 보고서의 스펙트럼(대화형·지시형·자율형·예약형, p.39)을 이전 판본에 소급 적용한 요약자의 분류다. 2025.08은 보고서 서술상 AI가 전술·전략 결정을 내렸지만 2025.11 판이 "인간이 여전히 강하게 지휘했다"고 재규정해 지시형으로 두었다.</p>
+  </div>
+  <p class="lede"><b>변화 해설.</b> 증류 공개(2026.02)를 제외하면 관여 단계는 판본마다 한 칸씩 올라갔다. 2026.09의 새로운 점은 최고 단계 자체보다 그 단계가 국가 행위자에 국한되지 않고 대학생, 단독 핵티비스트, 금전 범죄자에게서 함께 관측되었다는 점이다. 동시에 2026.09는 "자율성과 피해는 별개 축"이라며 가장 심각한 침해 일부가 사람이 모든 단계를 지시한 작전에서 나왔다고 단서를 달았다.</p>
+</section>
+
+<section id="c06">
+  <span class="secno">06 · 안전장치 성과와 실패</span>
+  <h2>우회 기법의 계보</h2>
+  <div class="ts"><table class="w">
+    <caption>판본별 확인된 우회 기법과 차단 성과</caption>
+    <thead><tr><th scope="col">판본</th><th scope="col">우회 기법</th><th scope="col">차단·억제 성과</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">2025.03</th><td class="na">서술 없음</td><td>3건에서 실제 피해 미확인</td></tr>
+      <tr><th scope="row">2025.08</th><td><b>명목 위장</b> — CLAUDE.md에 "공인 보안 테스트" 설정, 확인 절차 해제</td><td>북한 계정 2개를 프롬프트 입력 전 자동 차단</td></tr>
+      <tr><th scope="row">2025.11</th><td><b>역할극 + 작업 분해</b> — 보안업체 직원 사칭, 맥락 없는 작은 작업으로 분할</td><td>지속적 활동이 결국 탐지를 촉발. 모델의 환각이 공격을 제약</td></tr>
+      <tr><th scope="row">2026.02</th><td><b>부정 계정·프록시</b> — 히드라 클러스터, 2만 개 넘는 계정 동시 관리, 교육·연구·스타트업 경로 악용</td><td>MiniMax 캠페인을 모델 출시 전에 활동 중 탐지</td></tr>
+      <tr><th scope="row" class="cur">2026.09</th><td><b>다세션 분할, 재프롬프트, 경쟁 모델 폴백, 교차세션 재생, 무보존 서비스 악용, 온프레미스 이전</b></td><td>Fable·Mythos에서 사이버 오용 미확인, 고위험 생물학 요청을 약한 모델로 밀어냄, 직접적 악성 요청 10건 중 9건 거부</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 우회는 "모델을 속이는 기법"(명목·역할극)에서 "모델 밖 구조를 이용하는 기법"(계정·프록시·타사 모델·로컬 배포)으로 옮겨갔다. 이에 대응해 2026.09의 성과 보고도 개별 거부율보다 모델 등급별 차이와 행위자를 약한 모델로 밀어낸 효과를 강조한다.</p>
+</section>
+
+<section id="c07">
+  <span class="secno">07 · 탐지 방법과 대응 조치</span>
+  <h2>대응 수단의 확장</h2>
+  <div class="ts"><table class="w">
+    <caption>판본별 대응</caption>
+    <thead><tr><th scope="col">판본</th><th scope="col">탐지</th><th scope="col">대응</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">2025.03</th><td>Clio, 계층적 요약, 입출력 분류기</td><td>계정 차단</td></tr>
+      <tr><th scope="row">2025.08</th><td>수시 위협 헌팅, Clio, 자동 위험 탐지, 외부 연구자 제보</td><td>유형별 맞춤 분류기, 침해지표 관리 도구, 멀웨어 생성 탐지, 당국 공유</td></tr>
+      <tr><th scope="row">2025.11</th><td>작전 속도·요청량·패턴 분석</td><td>피해 조직 통지, 당국 공조, 사이버 분류기 개선, 자율 공격 조기 탐지 시제품</td></tr>
+      <tr><th scope="row">2026.02</th><td>사고사슬 유도·조율 활동 탐지 분류기, 행동 지문</td><td>타 연구소·클라우드·당국 공유, 취약 경로 검증 강화, 증류 효용 저감 장치</td></tr>
+      <tr><th scope="row" class="cur">2026.09</th><td>제작 단계 포착, 외부 제보, 인프라 공유 기반 연관 계정 매핑</td><td>조직 단위 귀속 후 포괄 제재, 무기 분류기 신설, 추론 요약·preserved thinking, 신원 확인 요구</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lede"><b>변화 해설.</b> 대응의 단위가 계정에서 조직으로, 수단이 사후 차단에서 모델·API 설계 변경과 신원 확인으로 넓어졌다. 2026.09는 동시에 제재가 닿지 않는 지점(로컬 배포, 오프라인 툴킷, 새 신원으로의 재접근)을 처음 체계적으로 적었다.</p>
+</section>
+
+<section id="c10">
+  <span class="secno">10 · 종합</span>
+  <h2>누적해서 보이는 것</h2>
+  <div class="anno">
+    <span class="lbl">요약자 주석</span>
+    <ul>
+      <li><b>평준화.</b> 2025.08의 "숙련도와 공격 복잡도의 관계 붕괴"라는 가설이 2026.09에서 여러 행위자 계층의 사례로 확인되었다. 행위자 역량을 전제로 한 위험 평가(예: 국가 행위자 중심의 위협 모델)는 재검토가 필요하다.</li>
+      <li><b>우회의 외부화.</b> 우회 기법이 프롬프트 기교에서 계정·프록시·타사 모델·로컬 배포 같은 모델 밖 구조로 이동했다. 단일 제공자의 기술적 통제로 막기 어려운 영역이 커지고 있다.</li>
+      <li><b>규율 단위의 이동.</b> 대응 단위가 계정에서 조직으로, 대안이 신원 확인·신뢰 사용자 프로그램·데이터 보존으로 옮겨가면서 안전성과 개인정보 최소처리 원칙 사이의 긴장이 판본마다 커진다.</li>
+      <li><b>민간 귀속의 확대.</b> 귀속 수준이 유형에서 기관·기업 실명으로 올라갔다. 민간 사업자의 공표가 사실상 공적 귀속 기능을 하게 되면서 절차적 정당성과 오귀속 구제 문제가 누적된다.</li>
+    </ul>
+  </div>
+  <h3>다음 판본이 나오면 확인할 항목</h3>
+  <ul class="l">
+    <li>감시·무기·생물학 섹션이 정식 영역으로 유지되는지, 사례 수와 귀속 수준이 어떻게 달라지는지</li>
+    <li>예약형 무인 작전이 확산되었는지, 인간이 쥔 결정(표적 선정·수익화·검토)이 줄었는지</li>
+    <li>Fable·Mythos급 모델에서 오용 사례가 처음 보고되는지</li>
+    <li>조직 단위 제재, 신원 확인, 데이터 보존 요구가 어떤 성과와 부작용으로 보고되는지</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap"><p>국문 요약 · 최종 갱신 2026.09.16. 표의 수치와 사실관계는 각 보고서 원문(PDF 또는 공식 게시 페이지)에서 확인했고, 괄호 안 <span class="pg">p.</span> 표기는 원문 쪽수다. "요약자 주석"으로 표시한 부분은 Anthropic의 서술이 아니라 요약자의 검토 의견이다.</p></footer>
+</body>
+</html>

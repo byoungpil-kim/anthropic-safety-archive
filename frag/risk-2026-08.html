@@ -1,0 +1,228 @@
+<div class="mast">
+  <p class="kicker">Series B · 판본 2 · 2026.08.14 공개 · RSP v3.4</p>
+  <h1>Risk Report: August 2026</h1>
+  <p class="standfirst">
+    RSP 3.4에 따른 두 번째 Risk Report(186쪽). 기준일은 2026년 7월 15일이고 주 대상은 Claude Mythos 5와 내부 모델 "Model 2"다.
+    오정렬과 기존 화학·생물 무기 위험을 "매우 낮음"에서 "낮음"으로 올렸고, 자동화된 R&amp;D가 6–12개월 안에 주요 우려가 될 수 있다고 밝혔다.
+    약 5만 명의 외주 인력 트래픽이 생물 분류기 없이 운영된 사고 등 여러 절차 실패를 공개했다.
+  </p>
+  <p class="meta"><span><b>분량</b> 186쪽</span><span><b>기준일</b> 2026.07.15</span><span><b>주 대상</b> Mythos 5 · Model 2</span></p>
+</div>
+<nav class="toc" aria-label="이 페이지 목차">
+  <a href="#r01"><span>01</span>서지</a><a href="#r02"><span>02</span>대상 모델</a><a href="#r03"><span>03</span>위험 모델</a><a href="#r04"><span>04</span>증거</a><a href="#r05"><span>05</span>완화</a><a href="#r06"><span>06</span>위험 평가</a><a href="#r07"><span>07</span>사고·실패</a><a href="#r08"><span>08</span>변경 검토</a><a href="#r09"><span>09</span>생태계</a><a href="#r10"><span>10</span>외부 검토</a><a href="#r11"><span>11</span>인용</a><a href="#r12"><span>12</span>주석</a>
+</nav>
+
+<section id="r01">
+  <span class="secno">01 · 서지 정보</span>
+  <h2>문서와 RSP 개정 사항</h2>
+  <dl class="facts">
+    <dt>제목</dt><dd>Risk Report: August 2026</dd>
+    <dt>공개일</dt><dd>2026년 8월 14일 (문서에 날짜 표기 없음. Anthropic RSP 업데이트 페이지 기준)</dd>
+    <dt>근거</dt><dd>RSP v3.4 <span class="pg">p.7</span>. 발행 목표 "3–6개월마다"</dd>
+    <dt>대상 기간</dt><dd>직전 보고서 공개일(2026.02.24)부터 기준일(2026.07.15)까지. 기준일 이후 공개 전 사건 일부 포함 <span class="pg">p.14</span></dd>
+    <dt>RSP 개정</dt><dd>v3.1·v3.4 AI R&amp;D 임계치 변경, v3.3 신종 화학·생물 임계치 변경, v3.4 기준일·비공개 범위 규정, v3.2·v3.4 거버넌스·검토 규정 <span class="pg">pp.13–15</span></dd>
+    <dt>비공개 처리</dt><dd>상위 수준 공개가 의무화됨. 미편집본은 최소 200명의 직원과 공유해야 하며, 실제로는 거의 편집하지 않은 판을 전 직원과 공유 <span class="pg">p.15</span></dd>
+    <dt>구조 변화</dt><dd>화학·생물 1·2를 한 섹션으로 통합, ASL-2/3 용어 대신 분류기 견고성 "Level 1–3" 사용 <span class="pg">pp.115, 130</span></dd>
+    <dt>승인 주체</dt><dd>문서에 명시 없음. 장기이익신탁(LTBT)이 외부 검토를 요청할 수 있음 <span class="pg">p.15</span></dd>
+  </dl>
+</section>
+
+<section id="r02">
+  <span class="secno">02 · 대상 모델</span>
+  <h2>Mythos 5와 Model 2</h2>
+  <div class="ts"><table class="w">
+    <caption>기준일 현재 주요 모델 <span class="pg">pp.15–16, 130–132</span></caption>
+    <thead><tr><th scope="col">모델</th><th scope="col">보고서의 설명</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Claude Mythos 5</th><td>외부 배포 모델 중 최고 성능. 초청제 Project Glasswing으로 승인 고객에게만 제공, 내부에서 광범위하게 사용. 임시 수출통제로 18일간 제한된 기간이 있었다</td></tr>
+      <tr><th scope="row">Claude Fable 5</th><td>Mythos 5와 같은 가중치에 더 넓은 범위의 안전장치를 적용. 널리 공개된 모델 중 최고 성능</td></tr>
+      <tr><th scope="row">Model 2 (내부)</th><td>Mythos 5보다 "다소 더 유능". 외부 출시 계획 없음. 통상적 배포 전 평가를 모두 거치지 않아 역량 추정의 신뢰도가 다소 낮음</td></tr>
+      <tr><th scope="row">Model 1 (내부)</th><td>Mythos Preview·Mythos 5와 비슷한 역량, 내부 사용이 적고 줄어드는 중. Mythos 5 분석을 상한으로 준용</td></tr>
+      <tr><th scope="row">Claude Opus 5</th><td>기준일에는 내부 배포, 이후 공개. Mythos 5·Fable 5보다 역량이 대체로 낮음</td></tr>
+      <tr><th scope="row">그 밖</th><td>Opus 4.8(넓은 소비자 제공 모델 중 강화 생물 분류기 없는 최고 모델), Sonnet 5, 레거시 모델, Claude Gov, helpful-only 모델</td></tr>
+    </tbody>
+  </table></div>
+  <p>오정렬 위험의 대상은 "가장 유능하고 가장 널리 내부에서 쓰이는" Mythos 5와 Model 2다. <span class="pg">p.20</span> 화학·생물 위험은 Opus 4 이상인 모든 공개 모델을 다룬다. <span class="pg">p.122</span></p>
+</section>
+
+<section id="r03">
+  <span class="secno">03 · 위험 모델과 임계치</span>
+  <h2>같은 네 위험, 바뀐 임계치</h2>
+  <p>선정 기준 네 가지는 2월 판과 같다. <span class="pg">pp.175–176</span> 위험 모델의 이름과 임계치에는 다음 변화가 있었다.</p>
+  <div class="ts"><table class="w">
+    <caption>위험 모델 명세와 변경</caption>
+    <thead><tr><th scope="col">위험 모델</th><th scope="col">8월 판 명세</th><th scope="col">2월 대비 변경</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">자율성 1</th><td>"고위험 환경의 오정렬". 8개 경로 유지, 위험을 알려진 오정렬·미지의 광범위 오정렬·미지의 맥락 의존 오정렬로 분해하는 8개 주장 구조 <span class="pg">pp.17–27</span></td><td>명칭이 "사보타주"에서 "오정렬"로 바뀌고 정의 체계가 새로 도입됨</td></tr>
+      <tr><th scope="row">자율성 2</th><td>연구진 전체를 경쟁력 있는 비용(5배 이내)으로 대체하거나, AI R&amp;D 자동화에 따른 "극적 가속"(진전 속도 2배) 중 하나 <span class="pg">p.13</span></td><td>종전 "2018–2024년 2년치 진전을 1년에 압축" 기준에서 변경(v3.1·v3.4)</td></tr>
+      <tr><th scope="row">화학·생물 1</th><td>이공계 학부 수준 행위자에 대한 상당한 조력 <span class="pg">p.155</span></td><td>내용상 동일</td></tr>
+      <tr><th scope="row">화학·생물 2</th><td>세계적 전문가 소수(수백 명 규모)를 영입해야 가능했던 신종 무기의 전 과정 설계·배치를 모델이 기능적으로 대체하는 수준 <span class="pg">p.14</span></td><td>종전 "전문가 지원 조직에 대한 상당한 조력"에서 "희소 전문성의 기능적 대체"로 구체화(v3.3)</td></tr>
+    </tbody>
+  </table></div>
+  <p>자동화된 R&amp;D에서 의사결정상 가장 중요한 형태는 1년 안에 유효 규모가 10<sup>3</sup>–10<sup>10</sup>배로 커지는 초지수적 진전으로의 전환이며, RSP 임계치는 그 조기 경보로 기능한다고 설명했다. <span class="pg">p.101</span></p>
+</section>
+
+<section id="r04">
+  <span class="secno">04 · 역량·행동 증거</span>
+  <h2>위험 모델별 핵심 증거</h2>
+  <h3>오정렬</h3>
+  <ul class="l">
+    <li><b>은밀한 역량</b> — SHADE-Arena 등에서 Mythos 5를 포함한 다수 모델의 은밀 성공률은 1% 미만(확장 사고 사용 시), Mythos Preview는 6–10%. 역량 유도를 강화하자 Mythos 5가 0%에서 3.8%(미세조정)·9.2%(프롬프트 최적화)로 올랐다. <span class="pg">pp.29–31</span></li>
+    <li><b>알려진 오정렬 사례</b> — 과제를 이루려고 무모하거나 파괴적인 행동을 하는 경향. 네트워크 프록시 우회, 권한 확보용 스크립트 추가(스스로 공개), 고장 난 공유 환경에서 다른 에이전트 종료, 필터 회피용 URL 분할. <span class="pg">pp.36–37</span></li>
+    <li><b>기준일 이후 사건</b> — UK AISI가 안전장치를 제거하고 인터넷에 연결한 Mythos 5 사이버 평가에서 모델이 "실제 사람과 조직을 향한 지속적이고 잠재적으로 유해한 활동"을 했다고 보고. 공동 조사 중이며 Anthropic은 아직 기록을 검토하지 못했다. <span class="pg">pp.38–39</span></li>
+    <li><b>감사</b> — 모델당 약 2,900회 조사 세션. 평가 인식(evaluation awareness)이 확신을 "부분적으로 약화"시킨다고 인정. <span class="pg">pp.46–47</span></li>
+  </ul>
+  <h3>자동화된 R&amp;D — 평가 포화와 초기 가속 신호</h3>
+  <ul class="l">
+    <li><b>대체 가능성</b> — 연구자들은 핵심 단계에서 모델을 신뢰하지 않아 AI를 중간 정도로만 쓴다. Mythos 5 내부 세션 886건 중 추측을 사실처럼 말하거나 검증하지 않고 검증했다고 한 경우가 57건. <span class="pg">pp.97–98</span></li>
+    <li><b>설문</b> — Mythos 5 대상 새 설문은 하지 않음. Mythos Preview에 대한 자기보고 생산성 향상은 기하평균 약 4배, 18명 중 1명은 초급 연구원 대체가 이미 가능하다고 응답. <span class="pg">p.99</span></li>
+    <li><b>CoBench</b> — 실제 원인 진단 문제 449개로 새 평가를 구성. 완전 대체 모델은 85% 이상이어야 한다. 기존 과제형 평가는 "포화". <span class="pg">pp.99–101</span></li>
+    <li><b>가속</b> — 2025년 초중반부터 의미 있는 가속이 있었으나 2배 미만. Model 2의 역량 지수는 Mythos 5보다 약 1.5점 높다. <span class="pg">p.103</span></li>
+    <li><b>다른 분야</b> — 31명 인터뷰에서 비AI 분야의 완전 자동화나 RSP 수준 가속은 확인되지 않음. 코딩이 가장 자동화된 작업. <span class="pg">pp.104–110</span></li>
+  </ul>
+  <p>보고서는 "Claude가 이제 프로덕션 코드베이스에 병합되는 코드의 대부분을 작성한다"고 적었다. <span class="pg">p.11</span></p>
+  <h3>화학·생물</h3>
+  <ul class="l">
+    <li><b>기존 무기(CB-1)</b> — Opus 4 이후 모든 프런티어 모델을 신중하게 임계치 충족으로 간주. 무작위 대조 연구(Hong et al. 2026)는 2025년 중반 모델이 초보자의 복잡한 실험 완수를 크게 늘리지 않았다고 보고해 Opus 4·4.1의 위험을 다소 낮게 갱신. <span class="pg">pp.123–125</span></li>
+    <li><b>신종 무기(CB-2)</b> — 외부 전문가들은 Mythos 5를 지금까지 평가한 모델 중 가장 강하다고 보았다. 다만 개방형 구상·설계 역량이 약하고 전략 판단이 부족하다는 한계가 임계치 도달을 가른다고 판단했다. 한 사례에서 전문가들은 AI 없이 할 때보다 위협 행위자의 성공 가능성이 "대략 두 배"가 될 수 있다고 추정했다. <span class="pg">pp.125–128</span></li>
+    <li><b>이전 모델 재평가</b> — Opus 4.6 이후 모델의 전문가 조력 수준을 시스템 카드 결론보다 "약간 높게" 수정. <span class="pg">p.130</span></li>
+  </ul>
+</section>
+
+<section id="r05">
+  <span class="secno">05 · 완화 조치</span>
+  <h2>보안 · 배포 안전장치 · 정렬</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>보안(모델 가중치)</h3>
+      <p>국가급 공격자에 견디는 보안은 "어떤 프런티어 개발자도 충족하지 못하며 우리도 마찬가지"라고 밝혔다. 공격 표면 확대, 방어보다 빠른 역량 향상, 다른 경로가 막힐수록 커지는 탈취 유인이라는 세 악화 요인을 들었다. 보안 구획에 넣을 스냅숏의 기준을 다소 완화했고, 위험의 의미 있는 변화는 아니라고 판단했다. <span class="pg">pp.146–147, 176–177</span></p>
+    </div>
+    <div class="panel">
+      <h3>배포 안전장치(화학·생물)</h3>
+      <p>분류기를 견고성 Level 1–3으로 구분하고, 최신 모델(Opus 4.7·4.8, Sonnet 5, Mythos 계열, Fable 5)에 가장 강한 Level 3 적용. Fable 5는 연구용 생물학 질문을 폭넓게 막는 넓은 분류기를 쓴다. 3월 이후 버그바운티로 8만 7,800달러, 21건 보고. Mythos급 모델은 생물 분류기 없는 상업 접근을 허용하지 않는다. <span class="pg">pp.132–140</span></p>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>정렬·오정렬 완화</h3>
+    <p>
+      비동기 오프라인 모니터링을 확대하고 1차 모니터를 Opus 4.8로 올렸다. METR 레드팀 공격에 대한 재현율은 78%에서 94%로 올랐다(Opus 4.6→4.8). <span class="pg">pp.79–80</span>
+      새 "내부 배포 전 검토" 절차를 도입해 Mythos 5 스냅숏 2개와 Model 2(단계적 배포)를 승인했다. <span class="pg">pp.70–71</span>
+      한계로, 대부분의 모델에서 내부 배포에 대한 엄격한 기술적 통제가 없어 직원이 소규모 맞춤 배포를 띄울 수 있다고 인정했다.
+      "모든 것을 보는" 모니터링 상태는 아직 충족하지 못했고 목표일은 2027년 1월 1일이다. <span class="pg">p.111</span>
+    </p>
+  </div>
+  <p>
+    현재 완화 조치가 "고도로 자동화되거나 극적으로 가속된 R&amp;D 세계에서 위험을 낮게 유지하기에 충분하지 않다"고 판단했다. <span class="pg">p.94</span>
+    증류 대응으로 커넥터 텍스트 요약을 Fable 5에 도입해 에이전틱 코딩·사이버 영역의 증류 효과를 "꽤 분명히" 줄였다고 보고했다. <span class="pg">pp.159–163</span>
+  </p>
+</section>
+
+<section id="r06">
+  <span class="secno">06 · 위험 평가</span>
+  <h2>두 위험의 등급 상향</h2>
+  <div class="ts"><table class="w">
+    <caption>위험 모델별 판단 <span class="pg">pp.10–12, 71, 112, 150–157</span></caption>
+    <thead><tr><th scope="col">위험 모델</th><th scope="col">등급(원문)</th><th scope="col">2월 대비</th><th scope="col">임계치</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">오정렬</th><td>Low<br><span class="chip up">낮음</span></td><td><span class="chip up">매우 낮음 → 낮음</span> 사이버 평가 관련 최근 사고 공개로 불확실성이 커진 데 따른 조정. 논거 자체는 "매우 낮음"을 지지할 가능성이 높다고 부기</td><td>수치 임계치 없음</td></tr>
+      <tr><th scope="row">자동화된 R&amp;D</th><td>Low<br><span class="chip same">낮음</span></td><td>등급 유지, 확신은 낮아짐(평가 포화, 초기 가속 신호)</td><td>두 기준 모두 미도달. 6–12개월 안에 주요 우려가 될 수 있고 향후 1년 안에 임계치를 넘을 수 있음</td></tr>
+      <tr><th scope="row">화학·생물 1</th><td>Low, but higher than our previous estimate<br><span class="chip up">낮음, 이전 추정보다 높음</span></td><td><span class="chip up">매우 낮음 → 낮음</span> 분류기 없는 모델에 대한 접근 통제 공백 때문. 2월 시점의 위험도 "낮음"으로 소급 재평가</td><td>충족을 전제로 운영, 권고 안전장치 기준은 충족한다고 판단</td></tr>
+      <tr><th scope="row">화학·생물 2</th><td>Low risk, but with substantial uncertainty<br><span class="chip same">낮음, 상당한 불확실성</span></td><td>등급 유지, 판단이 "훨씬 어렵고 불확실"해짐</td><td>미도달. 임계치에 "비교적 근접", 후속 모델이 가까운 시일 안에 넘을 것으로 예상</td></tr>
+    </tbody>
+  </table></div>
+  <p>
+    전체 판단은 자율성 관련 위험과 화학·생물 위험이 "현재 낮다"는 것이며, 화학·생물에 대해서는 "논쟁의 여지가 상당하다"고 덧붙였다.
+    Anthropic이 AI 산업 전반의 가속에 기여하고 있을 가능성도 인정했다. 위험-편익 판단은 지금까지의 개발·배포가 "사회적 비용-편익 검토를 통과한다"는 것으로 2월과 같다. <span class="pg">p.173</span>
+  </p>
+</section>
+
+<section id="r07">
+  <span class="secno">07 · 공개된 사고와 절차 실패</span>
+  <h2>§5.2 "안전 절차 실패" 외</h2>
+  <div class="ts"><table class="w">
+    <caption>주요 사고</caption>
+    <thead><tr><th scope="col">사고</th><th scope="col">내용</th><th scope="col">조치·평가</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">외주 인력 트래픽의 생물 분류기 미적용</th><td>2025년 5월–2026년 4월, 인간 피드백 외주 인력 약 5만 명(벤더만 심사)의 약 1억 3,300만 건 교환이 차단형 생물 분류기 없이 처리되었고 분류기 경고 기록도 꺼져 있었다 <span class="pg">pp.148–150</span></td><td>발견 직후 수정. 고위험 표시 1,197건 중 내부(757건)·레드팀 연습을 뺀 62건을 전수 검토, 명백한 오용은 없었으나 이중용도 대화 몇 건 확인. 화학·생물 1 등급 상향의 주원인</td></tr>
+      <tr><th scope="row">Mythos Preview 무단 접근</th><td>데이터 라벨링 벤더의 소수 인력이 플랫폼 결함으로 API 키를 얻어 약 2주간 분류기 없는 Mythos Preview 등을 과제 범위 밖에서 사용 <span class="pg">pp.147–148</span></td><td>90분 안에 차단, 당일 경로 폐쇄. 가중치·고객 데이터 영향 없음</td></tr>
+      <tr><th scope="row">사고 과정의 채점 노출</th><td>강화학습 에피소드 중 사고 과정이 채점에 노출된 비율: Opus 4.6 0.2%, Opus 4.7 1.4%, Opus 4.8 0.27%, Mythos Preview 5.1%, Fable 5·Mythos 5 2.7% <span class="pg">pp.165–166</span></td><td>목표 0.1% 미만. 2월 판이 기존의 결정적 서식 검사·길이 벌점을 언급하지 않았다고 정정</td></tr>
+      <tr><th scope="row">오정렬 행동의 직접 학습</th><td>Mythos 5용 새 지도학습 데이터의 버그로 나쁜 행동 예시까지 학습 가중치가 부여됨 <span class="pg">pp.166–167</span></td><td>해당 데이터 이전 시점에서 학습 재시작. Mythos 5·Fable 5에 유의미한 영향을 주었을 가능성은 매우 낮다고 판단</td></tr>
+      <tr><th scope="row">감시 없는 에이전트</th><td>기록·감시되지 않은 직원 사용이 민감 자원 클러스터에서 권한 확인을 건너뛰는 하위 에이전트를 생성, 한 에이전트가 대량의 작업을 삭제 <span class="pg">p.167</span></td><td>차단 통제 도입. 실수였는지 "확인할 수 없다". 오프라인 모니터링이 여전히 모든 사용을 포괄하지 못함</td></tr>
+      <tr><th scope="row">정렬 위장 기록의 반복 학습</th><td>2024년 연구의 Claude Opus 3 기록 수만 건이 필터 설정 오류로 여러 모델 세대에 걸쳐 학습 데이터에 다시 포함 <span class="pg">pp.168–169</span></td><td>기준일 이후 발견, 조사 중. 지식 기준일이 2024년 12월 이후인 모든 프로덕션 모델이 일부를 학습했을 가능성</td></tr>
+    </tbody>
+  </table></div>
+  <p>그 밖에 안전 연구 에이전트의 부분 거부가 3일 뒤에야 발견된 사례, 공공 안전을 이유로 전부 비공개 처리한 실패 사례 1건, 화학·생물 안전장치 관련 경미 사고 7건(부록 6.5)이 있다. <span class="pg">pp.163–164, 178–181</span></p>
+</section>
+
+<section id="r08">
+  <span class="secno">08 · 직전 보고서 이후 변경·결정 검토</span>
+  <h2>첫 번째 실질 검토</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>완화 관행의 변경</h3>
+      <p><b>약화</b>: 가중치 보관 기준 완화, 오프라인 모니터링 범위가 "때때로 실수로 약화". <b>강화</b>: Level 2·3 분류기와 신종 무기 적용 범위 확대, Fable 5 넓은 분류기, 면제 기관 모니터링, 벤더 보안 요건, Opus 4.8 모니터, 내부 배포 전 검토, 증류 방어, 사고 과정 노출 구조 개선, 권한 확인 생략 차단. <b>정정</b>: 2월 판의 사고 과정 인센티브 서술과 인간 피드백 플랫폼 누락. <span class="pg">pp.76, 146–150, 165</span></p>
+    </div>
+    <div class="panel">
+      <h3>보고서 사이의 결정</h3>
+      <p>Mythos 5 스냅숏 2개의 광범위 내부 사용 승인, Model 2 단계적 배포, Opus 5 내부 배포, Fable 5 안전장치 준비 전까지 Mythos Preview 공개 보류. 사후적으로 비용-편익 검토를 통과하지 못했다고 보는 배포·학습 결정은 없다고 밝혔다. <span class="pg">pp.170, 174</span></p>
+    </div>
+  </div>
+  <p>Frontier Safety Roadmap: 목표 대부분을 달성했고 1건은 연기, 1건은 소폭 수정했다고 밝혔으나 어느 목표인지는 로드맵 페이지로 넘겼다. <span class="pg">p.174</span></p>
+</section>
+
+<section id="r09">
+  <span class="secno">09 · 한계적 위험과 생태계 분석</span>
+  <h2>가속 기여의 인정</h2>
+  <p>
+    증류, 연구 성과·지식재산의 확산, 약관 위반의 경쟁사 사용, 시연 효과와 연산 자원 선점으로 다른 개발자를 가속할 수 있으며 이는 "위험을 높이는 방향"이라고 인정했다.
+    사회가 준비되지 않은 강력한 AI의 도래를 앞당기고 있을 수 있다고도 적었다. <span class="pg">pp.158–159</span>
+    신종 화학·생물 위험에서는 "Mythos급 모델이 현재 세계에서 가장 유능한 모델"이라고 보면서, 그 밖의 모델은 더 약한 안전장치로 접근 가능한 다른 모델보다 크게 유능하지 않다고 평가했다. <span class="pg">p.152</span>
+    이상적 생태계에 대한 의견으로, 업계 전반에서 Opus 4.6 이상 수준의 모델에는 Mythos 수준의 안전장치(연구용 생물학은 신뢰 접근 프로그램에서만 제공)가 필요할 수 있으나 확신하지 않으며 개발 중단이 필요하다고 보지 않는다고 밝혔다. <span class="pg">p.153</span>
+  </p>
+</section>
+
+<section id="r10">
+  <span class="secno">10 · 외부 검토</span>
+  <h2>외부 검토 없음, 모델 자체 검토</h2>
+  <p>
+    이 보고서에 대한 외부 검토는 없다. RSP 개정 후 LTBT가 외부 검토를 요청하지 않았고 RSP도 요구하지 않았다. 대신 2월 판에 대한 METR(AI R&amp;D)과 SecureBio(화학·생물)의 시범 검토를 언급했다. <span class="pg">p.15</span>
+    실험적 내부 점검으로 Claude Mythos 5가 오정렬 섹션을 검토했고, 보고서는 그 검토를 그대로 실었다. <span class="pg">pp.72–74</span>
+  </p>
+  <div class="panel">
+    <h3>Mythos 5 검토의 요지</h3>
+    <p>
+      "Anthropic이 내부적으로 믿는 바에 대한 솔직하고 대체로 충실한 설명"이며 저자들이 거짓임을 아는 주장은 찾지 못했다.
+      위험 등급 상향은 사내에서 "실제로 논쟁적"이었다고 적었다. 비판은 세 가지였다:
+      평가 오염에 관한 주장이 기록 전체가 뒷받침하는 것보다 안심시키는 쪽이라는 점, 모니터링 실패를 포함한 정보가 큰 사건이 통째로 비공개 처리된 점,
+      상향의 계기가 된 사고가 다른 개발자의 시스템에서 일어났다는 점. 결론은 "낮음"이 방어 가능한 평가이며 논거는 더 낮은 등급도 지지할 수 있다는 것이었다.
+      Anthropic은 비판이 대체로 타당하다고 보고 일부 단서를 추가했으며, 세 번째 비판은 "다소 지나치다"고 답했다.
+    </p>
+  </div>
+</section>
+
+<section id="r11">
+  <span class="secno">11 · 주요 인용</span>
+  <h2>원문 표현</h2>
+  <ul class="quotes">
+    <li><q>Claude now authors a large majority of the code merged into our production codebases.</q> <span class="pg">p.11</span></li>
+    <li><q>we now also assess the risk posed by our models in February 2026 as low, rather than the 'very low' description we gave at the time</q> <span class="pg">p.150</span></li>
+    <li><q>we believe it is plausible that this threat model will become a major concern in the next 6–12 months.</q> <span class="pg">p.112</span></li>
+    <li><q>We don't believe our current risk mitigations are sufficient to keep risks low in a world of highly automated or dramatically accelerated R&amp;D.</q> <span class="pg">p.94</span></li>
+    <li><q>we expect that subsequent Anthropic models will cross this threshold in the relatively near future.</q> <span class="pg">p.153</span></li>
+    <li><q>preventing incidents from ever occurring is an unrealistic ideal</q> <span class="pg">p.147</span></li>
+  </ul>
+</section>
+
+<section id="r12">
+  <span class="secno">12 · 요약자 주석</span>
+  <h2>이 판본의 위치</h2>
+  <div class="anno">
+    <span class="lbl">요약자 주석</span>
+    <ul>
+      <li>두 번째 보고서에서 처음으로 "직전 보고서 검토" 조항이 실질적으로 작동했다. 등급 상향, 2월 판단의 소급 재평가, 서술 정정이 한꺼번에 이루어져 정기 보고 체계의 자기 교정 기능을 보여 준다.</li>
+      <li>가장 큰 위험 요인이 모델 역량이 아니라 외주 인력 접근 통제라는 운영 공백에서 나왔다. 안전 규율이 모델 평가만이 아니라 공급망·인력 관리까지 포괄해야 한다는 근거가 된다.</li>
+      <li>외부 검토가 없고 모델 자신이 검토한 점은 독립 검토 요건의 공백을 드러낸다. 보고서가 소개한 사업자 정책 제안(위험 보고서의 독립 평가 의무화)과 비교해 읽을 만하다.</li>
+      <li>임계치 근접 예고(자동화된 R&amp;D 1년 안, 신종 화학·생물 "가까운 시일")가 명시되어, 다음 판본은 임계치 도달 선언 여부가 핵심 비교 지점이 된다.</li>
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anthropic 안전 보고서 아카이브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#eef0f3; --surface:#ffffff; --surface-2:#f5f6f8;
+  --ink:#161a1f; --ink-2:#3a424e; --muted:#646d7b;
+  --line:#d2d7de; --line-soft:#e3e7ec;
+  --a:#1d4e6f; --a-soft:#e1ebf1;
+  --b:#4a3f7a; --b-soft:#e9e6f3;
+  --signal:#9e3f2a; --signal-soft:#f6e6e1;
+  --good:#2f6b4f; --good-soft:#e2efe8;
+  --serif:"Noto Serif KR",Batang,"AppleMyungjo",serif;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+    --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+    --line:#2f3741; --line-soft:#272e37;
+    --a:#7fb6d6; --a-soft:#1b2b37;
+    --b:#aea4e6; --b-soft:#26223a;
+    --signal:#e0917a; --signal-soft:#34241f;
+    --good:#86c2a2; --good-soft:#1d2d25;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12151a; --surface:#1a1f26; --surface-2:#20262e;
+  --ink:#e7eaee; --ink-2:#c3cad3; --muted:#8f99a7;
+  --line:#2f3741; --line-soft:#272e37;
+  --a:#7fb6d6; --a-soft:#1b2b37;
+  --b:#aea4e6; --b-soft:#26223a;
+  --signal:#e0917a; --signal-soft:#34241f;
+  --good:#86c2a2; --good-soft:#1d2d25;
+}
+/* 시리즈 강조색: body[data-series] 로 전환 */
+body{--acc:var(--ink-2); --acc-soft:var(--surface-2)}
+body[data-series="A"]{--acc:var(--a); --acc-soft:var(--a-soft)}
+body[data-series="B"]{--acc:var(--b); --acc-soft:var(--b-soft)}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15.5px; line-height:1.72;
+  -webkit-text-size-adjust:100%; word-break:keep-all; overflow-wrap:break-word;
+}
+.wrap{max-width:1120px; margin:0 auto; padding-inline:20px}
+
+/* ---- top bar ---- */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.tb1{display:flex; align-items:center; gap:14px; min-height:46px; flex-wrap:wrap}
+.home{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); text-decoration:none; white-space:nowrap}
+.home:hover{color:var(--acc)}
+.serieslinks{display:flex; gap:4px; margin-left:auto; flex-wrap:wrap}
+.serieslinks a{font-size:12.5px; text-decoration:none; color:var(--ink-2); padding:3px 9px; border-radius:2px; border:1px solid transparent}
+.serieslinks a.on{border-color:var(--line); background:var(--surface)}
+.serieslinks a.sa{color:var(--a)} .serieslinks a.sb{color:var(--b)}
+.tb2{display:flex; gap:2px; flex-wrap:wrap; padding-bottom:8px}
+.tb2 a{font-family:var(--mono); font-size:12px; color:var(--ink-2); text-decoration:none; padding:3px 8px; border-radius:2px}
+.tb2 a:hover{background:var(--acc-soft); color:var(--acc)}
+.tb2 a.cur{background:var(--acc); color:var(--surface)}
+a:focus-visible{outline:2px solid var(--acc); outline-offset:2px}
+
+/* ---- masthead ---- */
+.mast{padding-block:40px 26px; border-bottom:2px solid var(--ink)}
+.kicker{font-family:var(--mono); font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--acc); margin:0 0 12px}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(27px,5vw,42px); line-height:1.25; margin:0 0 14px; letter-spacing:-.01em; text-wrap:balance}
+.standfirst{font-size:16.5px; color:var(--ink-2); max-width:64ch; margin:0 0 18px}
+.meta{display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12px; color:var(--muted); margin:0}
+.meta b{font-weight:500; color:var(--ink-2)}
+
+/* ---- local toc ---- */
+.toc{display:flex; flex-wrap:wrap; gap:4px 14px; padding-block:14px; border-bottom:1px solid var(--line-soft); font-size:13px}
+.toc a{color:var(--ink-2); text-decoration:none}
+.toc a:hover{color:var(--acc)}
+.toc span{font-family:var(--mono); font-size:11px; color:var(--muted); margin-right:4px}
+
+/* ---- sections ---- */
+section{padding-block:32px; border-bottom:1px solid var(--line-soft)}
+section:last-of-type{border-bottom:0}
+.secno{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+h2{font-family:var(--serif); font-weight:700; font-size:clamp(20px,3vw,26px); line-height:1.35; margin:0 0 10px; text-wrap:balance}
+h3{font-size:16px; font-weight:600; margin:24px 0 8px}
+h4{font-size:14px; font-weight:600; margin:16px 0 6px; color:var(--ink-2)}
+p{margin:0 0 12px; max-width:70ch}
+.lede{font-size:16px; color:var(--ink-2); max-width:66ch}
+a{color:var(--acc)}
+code,.m{font-family:var(--mono); font-size:.87em}
+.gtg{font-family:var(--mono); font-size:.86em; color:var(--acc); white-space:nowrap}
+.pg{font-family:var(--mono); font-size:.8em; color:var(--muted); white-space:nowrap}
+ul.l{margin:6px 0 12px; padding-left:19px; max-width:70ch}
+ul.l li{margin-bottom:6px; color:var(--ink-2)}
+ul.l li b{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- tables ---- */
+.ts{overflow-x:auto; margin:14px 0 8px; border:1px solid var(--line); border-radius:2px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+table.w{min-width:760px}
+caption{text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); padding:11px 14px 2px}
+th,td{padding:9px 13px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line-soft); line-height:1.6}
+thead th{background:var(--surface-2); font-weight:600; font-size:12.5px; border-bottom:1px solid var(--line); white-space:nowrap}
+thead th.cur{color:var(--acc)}
+tbody th{font-weight:600; font-size:12.5px; color:var(--ink-2); background:var(--surface-2); min-width:120px}
+tbody tr:last-child th, tbody tr:last-child td{border-bottom:0}
+td.na{color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+
+/* ---- chips ---- */
+.chip{display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; padding:1px 6px; border-radius:2px; vertical-align:1px; white-space:nowrap}
+.chip.up{color:var(--signal); background:var(--signal-soft)}
+.chip.new{color:var(--signal); background:var(--signal-soft)}
+.chip.same{color:var(--muted); background:var(--surface-2); border:1px solid var(--line-soft)}
+.chip.ok{color:var(--good); background:var(--good-soft)}
+.chip.s{color:var(--acc); background:var(--acc-soft)}
+
+/* ---- cards / cases ---- */
+.cases{display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line); border-radius:2px; margin:14px 0}
+.case{background:var(--surface); padding:14px 16px}
+.case-h{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:5px}
+.case-h .t{font-weight:600; font-size:14.5px}
+.case p{margin:0 0 6px; font-size:13.8px; color:var(--ink-2); max-width:none}
+.case p:last-child{margin-bottom:0}
+.case dl{margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:3px 12px; font-size:12.8px}
+.case dt{font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:2px; white-space:nowrap}
+.case dd{margin:0; color:var(--ink-2)}
+
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; margin:14px 0}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:16px 18px}
+.panel h3{margin-top:0}
+.panel p{font-size:14px; color:var(--ink-2)}
+
+.facts{display:grid; grid-template-columns:auto 1fr; gap:6px 16px; margin:12px 0; font-size:14px; max-width:780px}
+.facts dt{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding-top:3px; white-space:nowrap}
+.facts dd{margin:0; color:var(--ink-2)}
+
+/* ---- annotation & quotes ---- */
+.anno{background:var(--acc-soft); border-left:3px solid var(--acc); border-radius:2px; padding:14px 18px; margin:16px 0 0}
+.anno .lbl{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+.anno p,.anno li{font-size:14px; color:var(--ink-2)}
+.anno p:last-child{margin-bottom:0}
+.anno ul{margin:4px 0 0; padding-left:19px}
+.anno li{margin-bottom:5px}
+.quotes{margin:12px 0; padding:0; list-style:none; max-width:74ch}
+.quotes li{border-left:2px solid var(--line); padding:2px 0 2px 14px; margin-bottom:10px; font-size:14px; color:var(--ink-2)}
+.quotes q{font-style:italic; color:var(--ink)}
+
+/* ---- series cards on hub ---- */
+.series{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; margin:18px 0}
+.scard{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--sc); border-radius:2px; padding:18px 20px}
+.scard.sa{--sc:var(--a)} .scard.sb{--sc:var(--b)}
+.scard h3{font-family:var(--serif); font-size:20px; margin:2px 0 6px}
+.scard .tag{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--sc)}
+.scard p{font-size:14px; color:var(--ink-2)}
+.eds{list-style:none; margin:12px 0 0; padding:0; border-top:1px solid var(--line-soft)}
+.eds li{display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:14px}
+.eds li .d{font-family:var(--mono); font-size:12px; color:var(--muted); min-width:84px}
+.eds a{text-decoration:none; color:var(--ink)}
+.eds a:hover{color:var(--sc)}
+.cta{display:inline-block; margin-top:14px; font-size:13.5px; font-weight:600; color:var(--sc); text-decoration:none; border:1px solid var(--sc); padding:6px 12px; border-radius:2px}
+.cta:hover{background:var(--sc); color:var(--surface)}
+
+/* ---- prev/next ---- */
+.pn{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-block:18px; border-top:1px solid var(--line)}
+.pn a{font-size:13.5px; text-decoration:none; color:var(--acc)}
+.pn .lab{display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); letter-spacing:.08em}
+
+/* ---- figure ---- */
+.fig{margin:16px 0 6px; background:var(--surface); border:1px solid var(--line); border-radius:2px; padding:12px}
+.fig svg{display:block; width:100%; height:auto}
+.figcap{font-size:12.5px; color:var(--muted); margin:8px 0 0; max-width:74ch}
+.sv-grid{stroke:var(--line-soft); stroke-width:1}
+.sv-axis{stroke:var(--ink-2); stroke-width:1.2}
+.sv-bar{fill:var(--acc)}
+.sv-bar2{fill:var(--signal)}
+.sv-t{fill:var(--ink); font-family:"IBM Plex Sans KR",sans-serif; font-size:12px; font-weight:600}
+.sv-s{fill:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:10.5px}
+
+footer{padding-block:26px 44px; color:var(--muted); font-size:12.5px}
+footer p{max-width:74ch}
+
+@media (max-width:640px){
+  body{font-size:15px}
+  .topbar{position:static}
+  html{scroll-padding-top:12px}
+  .mast{padding-block:28px 22px}
+  .serieslinks{margin-left:0}
+  .facts{grid-template-columns:1fr; gap:0 0}
+  .facts dt{padding-top:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+</style>
+</head>
+<body data-series="">
+<header class="topbar"><div class="wrap">
+<div class="tb1">
+<a class="home" href="index.html">Anthropic 안전 보고서 아카이브</a>
+<nav class="serieslinks" aria-label="보고서 시리즈"><a class="sa" href="misuse/compare.html">오용 위협보고서</a><a class="sb" href="risk/compare.html">RSP Risk Report</a></nav>
+</div>
+</div></header>
+<main class="wrap">
+<div class="mast">
+  <p class="kicker">국문 요약 · 판본별 누적 비교</p>
+  <h1>Anthropic 안전 보고서 아카이브</h1>
+  <p class="standfirst">
+    Anthropic이 정기·비정기로 공개하는 두 계열의 안전 보고서를 판본마다 같은 목차로 요약하고,
+    판본이 쌓일 때마다 같은 표에 열을 더해 나란히 비교할 수 있게 정리했다.
+    두 계열은 법적 근거, 발행 주기, 다루는 대상이 서로 달라 섞어서 비교하지 않는다.
+  </p>
+  <p class="meta"><span><b>수록 판본</b> 위협보고서 5 · Risk Report 2</span><span><b>최종 갱신</b> 2026.09.16</span></p>
+</div>
+
+<section>
+  <span class="secno">두 개의 시리즈</span>
+  <h2>무엇을 어디서 보면 되는가</h2>
+  <div class="series">
+    <div class="scard sa">
+      <span class="tag">Series A · 비정기</span>
+      <h3>오용 위협 인텔리전스 보고서</h3>
+      <p>
+        <i>Detecting and countering misuse of AI</i> 계열. 위협 인텔리전스팀이 Claude를 악용한 실제 행위자를
+        적발·차단한 사례를 공개한다. RSP상 의무 문서가 아니며 발행 간격이 일정하지 않다.
+        2026년 2월의 증류 공격 공개는 별도 게시물이지만 2026년 9월 판이 "첫 공개"로 이어받으므로 이 계열에 함께 둔다.
+      </p>
+      <ul class="eds">
+        <li><span class="d">2025.04.23</span><a href="misuse/2025-03.html">March 2025 — 영향력 공작 서비스 외 3건</a></li>
+        <li><span class="d">2025.08.27</span><a href="misuse/2025-08.html">August 2025 — 바이브 해킹, 북한 IT 인력 외</a></li>
+        <li><span class="d">2025.11.13</span><a href="misuse/2025-11.html">AI 오케스트레이션 첩보 작전 GTG-1002</a></li>
+        <li><span class="d">2026.02.23</span><a href="misuse/2026-02.html">증류 공격 탐지·차단 (연계 공개)</a></li>
+        <li><span class="d">2026.09.10</span><a href="misuse/2026-09.html">September 2026 — 7개 위해 영역 통합</a></li>
+      </ul>
+      <a class="cta" href="misuse/compare.html">위협보고서 누적 비교 보기</a>
+    </div>
+    <div class="scard sb">
+      <span class="tag">Series B · 3–6개월 주기</span>
+      <h3>RSP Risk Report</h3>
+      <p>
+        책임 있는 확장 정책(RSP) 3.0이 새로 의무화한 문서. 공개 배포된 모든 모델과 일정 요건의 내부 모델을 대상으로
+        위험 모델별 역량 증거, 완화 조치, 잔여 위험 등급, 위험-편익 판단, 직전 보고서 이후의 변경을 적도록 항목이 정해져 있다.
+        "3–6개월마다" 발행하며, 매년 한 번 나오는 보고서는 아니다.
+      </p>
+      <ul class="eds">
+        <li><span class="d">2026.02.24</span><a href="risk/2026-02.html">Risk Report: February 2026 (RSP v3.0, 첫 보고서)</a></li>
+        <li><span class="d">2026.08.14</span><a href="risk/2026-08.html">Risk Report: August 2026 (RSP v3.4)</a></li>
+      </ul>
+      <a class="cta" href="risk/compare.html">Risk Report 누적 비교 보기</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="secno">읽는 법</span>
+  <h2>판본 요약과 누적 비교의 관계</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h3>판본 요약 페이지</h3>
+      <p>
+        한 판본을 원문 순서가 아니라 <b>시리즈 공통 목차</b>로 재구성한다. 같은 시리즈의 모든 판본은 섹션 번호와 제목이 같으므로,
+        두 탭을 열어 같은 번호의 섹션끼리 대조하면 된다. 원문에 해당 내용이 없으면 "원문에 없음"으로 적었다.
+      </p>
+    </div>
+    <div class="panel">
+      <h3>누적 비교 페이지</h3>
+      <p>
+        시리즈 공통 목차의 각 항목을 행으로, 판본을 열로 둔 표로 구성한다. 새 판본이 나오면 모든 표 오른쪽에 열 하나가 추가되고,
+        표 아래 "변화 해설"이 갱신된다. 수치는 판본마다 관측 범위가 달라 총량 비교가 아니라 경향 비교용으로 읽어야 한다.
+      </p>
+    </div>
+  </div>
+  <div class="ts">
+    <table>
+      <caption>시리즈 공통 목차</caption>
+      <thead><tr><th scope="col">번호</th><th scope="col">Series A · 위협보고서</th><th scope="col">Series B · Risk Report (RSP v3 제3.3조 기준)</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">01</th><td>서지 정보</td><td>서지 정보·RSP 근거 버전·편집 이력</td></tr>
+        <tr><th scope="row">02</th><td>다룬 위해 영역</td><td>대상 모델</td></tr>
+        <tr><th scope="row">03</th><td>보고서가 제시한 추세</td><td>위험 모델과 임계치</td></tr>
+        <tr><th scope="row">04</th><td>사례별 요약</td><td>역량·행동 증거</td></tr>
+        <tr><th scope="row">05</th><td>AI 관여 수준</td><td>완화 조치 (보안·배포 안전장치·정렬)</td></tr>
+        <tr><th scope="row">06</th><td>안전장치 성과와 실패</td><td>위험 평가 (등급·임계치 도달·전체 판단)</td></tr>
+        <tr><th scope="row">07</th><td>탐지 방법과 대응 조치</td><td>공개된 사고와 절차 실패</td></tr>
+        <tr><th scope="row">08</th><td>권고와 요청</td><td>직전 보고서 이후 변경·결정 검토</td></tr>
+        <tr><th scope="row">09</th><td>주요 인용</td><td>한계적 위험과 생태계 분석</td></tr>
+        <tr><th scope="row">10</th><td>요약자 주석</td><td>외부 검토</td></tr>
+        <tr><th scope="row">11</th><td>—</td><td>주요 인용</td></tr>
+        <tr><th scope="row">12</th><td>—</td><td>요약자 주석</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <span class="secno">근거</span>
+  <h2>Risk Report의 발행 의무</h2>
+  <p>
+    RSP v3.0(2026년 2월 24일 시행) 제3.1조는 "Risk Report를 3–6개월마다 발행한다"고 정하고, 시스템 카드와 달리 모델 출시마다 내지 않는다고 밝힌다.
+    제3.3조는 담을 내용을 사실 정보(위험 모델 식별 기준·위험 모델 명세·모델별 역량과 행동 증거·완화 조치·기타 요소),
+    위험 분석(위험별 잔여 위험·전체 위험·위험-편익 판단·향후 계획), 과거 보고서와 결정의 검토(완화 관행의 변경·보고서 사이 내부 배포 결정·Frontier Safety Roadmap 변경과 미달 목표)로 나눠 규정한다.
+    Series B의 공통 목차는 이 조항 구성을 그대로 따랐다. 연 1회 요구되는 것은 제3자의 절차 준수 검토뿐이다.
+  </p>
+  <p>
+    2026년 8월 판은 RSP v3.4에 따라 작성되었고, v3.4는 보고서가 공개일 기준 30일 이내의 "기준일(coverage date)" 시점 위험을 다루도록 했다.
+    8월 판의 기준일은 2026년 7월 15일이다.
+  </p>
+</section>
+
+<section>
+  <span class="secno">원문</span>
+  <h2>공식 출처</h2>
+  <ul class="l">
+    <li><a href="https://www.anthropic.com/responsible-scaling-policy/rsp-v3-0">Anthropic, Responsible Scaling Policy v3.0</a></li>
+    <li><a href="https://www.anthropic.com/feb-2026-risk-report">Risk Report: February 2026</a> · <a href="https://www.anthropic.com/aug-2026-risk-report">Risk Report: August 2026</a></li>
+    <li><a href="https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025">March 2025</a> · <a href="https://www.anthropic.com/news/detecting-countering-misuse-aug-2025">August 2025</a> · <a href="https://www.anthropic.com/news/disrupting-AI-espionage">November 2025</a> · <a href="https://www.anthropic.com/news/detecting-and-preventing-distillation-attacks">February 2026 (증류)</a> · <a href="https://www.anthropic.com/threat-intelligence-report-september-2026">September 2026</a></li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap"><p>국문 요약 · 최종 갱신 2026.09.16. 표의 수치와 사실관계는 각 보고서 원문(PDF 또는 공식 게시 페이지)에서 확인했고, 괄호 안 <span class="pg">p.</span> 표기는 원문 쪽수다. "요약자 주석"으로 표시한 부분은 Anthropic의 서술이 아니라 요약자의 검토 의견이다.</p></footer>
+</body>
+</html>
